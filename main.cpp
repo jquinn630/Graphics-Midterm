@@ -162,7 +162,6 @@ glEnable(GL_LIGHTING);
    }
    }; glEnd();
 } 
->>>>>>> 14944ce6d45eda927ac6474a8157a5c54ad97572
 
 // animates a red sphere to follow the bezier curve.
 void animateBezier()
