@@ -117,10 +117,10 @@ void drawControlCage()
 // draws a bezier curve based on control points
 void drawTrack()
 {
-
+	glDisable(GL_LIGHTING);
    glColor3f(0,0,1);
    glBegin(GL_LINE_STRIP);{
-   for (int i=0; i<track.size(); i++)
+   for (unsigned int i=0; i<track.size(); i++)
    {
 	for ( float t=0; t<=1; t+=.01)
     {
@@ -129,6 +129,7 @@ void drawTrack()
     }
    }
    }; glEnd();
+	glEnable(GL_LIGHTING);
 } 
 
 
@@ -441,7 +442,7 @@ int main(int argc, char* argv[]) {
 		points.push_back(temp);
 	}
 	
-		for (int i=0; i<points.size()-3; i+=3)
+		for (unsigned int i=0; i<points.size()-3; i+=3)
 	{
 		bezier temp =bezier(points[i], points[i+1], points[i+2], points[i+3]);
 		track.push_back(temp);
