@@ -43,8 +43,10 @@ float pi = 3.14159;
 GLint leftClick, rightClick;    // holds state of left and right mouse buttons.
 float oldx=0, oldy=0;    // holds previous x and y position of the mouse
 
+GLint id; // id number for menu
+
 // declare global camera object
-camera myCam(20.0, 2.00, 1.80,0,0,0);  // declares camera object
+camera myCam(50.0, 2.00, 1.80,0,0,0);  // declares camera object
 
 // draws axes for reference
 void drawAxes() {
@@ -82,7 +84,7 @@ void drawControlPoints()
 	glColor3f(1,1,1);
 		
 	// draw spheres at control points
-	for (int i=0; i<points.size(); i++)
+	for (unsigned int i=0; i<points.size(); i++)
 	{
 		GLUquadricObj* temp=gluNewQuadric();  // new sphere
 		glPushMatrix();{  // push matrix
@@ -99,12 +101,14 @@ void drawControlCage()
 	// set color to yellow
     glColor3f(1,1,0);
 
+  glDisable(GL_LIGHTING);
 	glBegin(GL_LINE_STRIP); {
-		for (int i=0; i<points.size(); i++)
+		for (unsigned int i=0; i<points.size(); i++)
 		{
 			glVertex3f(points[i].getX(),points[i].getY(),points[i].getZ());
 		}	
 	}; glEnd();
+  glEnable(GL_LIGHTING);
 
 }
 
@@ -132,6 +136,7 @@ void drawBezierCurve(controlpts p0, controlpts p1, controlpts p2, controlpts p3,
 	float zc= -3*p0.getZ() + 3*p1.getZ();
 	float zd= p0.getZ();
 	
+  glDisable(GL_LIGHTING);
 	glBegin(GL_LINE_STRIP);{
 	  for (double t=0.0; t<1.0; t+=tstep)
 	  {
@@ -141,6 +146,8 @@ void drawBezierCurve(controlpts p0, controlpts p1, controlpts p2, controlpts p3,
 		 glVertex3f(xpos,ypos,zpos);
 	  }
 	}; glEnd(); 
+glEnable(GL_LIGHTING);
+
 }
 
 // animates a red sphere to follow the bezier curve.
@@ -203,12 +210,12 @@ void renderScene(void)  {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPushMatrix(); {
-        drawAxes();				// draw our axes so we know how we are oriented
+        //drawAxes();				// draw our axes so we know how we are oriented
     }; glPopMatrix();
     
     glPushMatrix(); {
-        drawControlPoints();				// draw our control points for the bezier curve as spheres 
-    	drawControlCage();					// draws cage for control points
+        //drawControlPoints();				// draw our control points for the bezier curve as spheres 
+    	//drawControlCage();					// draws cage for control points
     	// draws a bezier curve for each set of four control points.  assuming there will always be N=1+3m control points.
     	for(int j=0; j<numPoints-3; j+=3)
     	{
@@ -391,7 +398,7 @@ void initScene() {
     glEnable( GL_LIGHT0 );
     
     // setup menu to be used for middle clicking
-    int id = glutCreateMenu(myMenu);
+    id = glutCreateMenu(myMenu);
     glutAddMenuEntry("Quit", 1);
     glutAttachMenu(GLUT_MIDDLE_BUTTON);
    	

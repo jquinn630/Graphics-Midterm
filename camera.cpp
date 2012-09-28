@@ -153,7 +153,7 @@ double camera::get_phi()
 	return cameraPhi;
 }
 
-  // function that sets 9 camera parameters based on radius, theta, phi
+// function that sets 9 camera parameters based on radius, theta, phi
 void camera::calculate_pos()
 {
 	// use spherical coordinates to update position
@@ -161,6 +161,7 @@ void camera::calculate_pos()
      set_eyey(cameraRadius * -cos(cameraPhi));
      set_eyez(cameraRadius * -cos(cameraTheta)*sin(cameraPhi));	
 }
+
 //updates camera position
 void camera::update_pos()
 {
