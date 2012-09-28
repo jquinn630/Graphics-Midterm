@@ -12,9 +12,6 @@
 	#include <GL/glu.h>
 #endif
 
-#ifndef CONTROLPTS_H
-#define CONTROLPTS_H
-
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,7 +23,7 @@ class controlpts
   friend controlpts operator *( const controlpts& y, float x);
 
   public:
-  controlpts(double a=0, double b=0, double c=0);
+  controlpts(double a, double b, double c);
   double getX();
   double getY();
   double getZ();
@@ -37,5 +34,3 @@ class controlpts
   double z;
   
 };
-
-#endif

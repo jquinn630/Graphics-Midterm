@@ -22,7 +22,6 @@
 #include <fstream>
 #include "camera.h"
 #include "controlpts.h"
-#include "bezier.h"
 
 using namespace std;
 
@@ -31,7 +30,6 @@ int windowWidth = 512, windowHeight = 512;
 
 // bezier curve points.
 vector<controlpts> points; // holds points read in from file
-vector<bezier> track;
 int numPoints;   // holds total number of control points
 
 // controls motion of animated sphere
@@ -115,7 +113,7 @@ void drawControlCage()
 }
 
 // draws a bezier curve based on control points
-void drawTrack()
+void drawBezierCurve(controlpts p0, controlpts p1, controlpts p2, controlpts p3, double tstep)
 {
 	// set color to blue
 	glColor3f(0,0,1);
@@ -150,6 +148,7 @@ void drawTrack()
 	}; glEnd(); 
 glEnable(GL_LIGHTING);
 
+<<<<<<< HEAD
    glColor3f(0,0,1);
    glBegin(GL_LINE_STRIP);{
    for (int i=0; i<track.size(); i++)
@@ -162,6 +161,9 @@ glEnable(GL_LIGHTING);
    }
    }; glEnd();
 } 
+=======
+}
+>>>>>>> kjl
 
 // animates a red sphere to follow the bezier curve.
 void animateBezier()
@@ -230,7 +232,10 @@ void renderScene(void)  {
         //drawControlPoints();				// draw our control points for the bezier curve as spheres 
     	//drawControlCage();					// draws cage for control points
     	// draws a bezier curve for each set of four control points.  assuming there will always be N=1+3m control points.
-    	drawTrack();
+    	for(int j=0; j<numPoints-3; j+=3)
+    	{
+    		drawBezierCurve(points[j],points[j+1],points[j+2],points[j+3],0.01);
+    	}
     }; glPopMatrix();
     
     glPushMatrix(); {
@@ -471,12 +476,6 @@ int main(int argc, char* argv[]) {
 		points.push_back(temp);
 	}
 	
-	for (int i=0; i<points.size()-3; i+=3)
-	{
-		bezier temp =bezier(points[i], points[i+1], points[i+2], points[i+3]);
-		track.push_back(temp);
-	} 
-	cout<<track.size()<<endl;
 	// register all of our callbacks with GLUT
 	registerCallbacks();
 	

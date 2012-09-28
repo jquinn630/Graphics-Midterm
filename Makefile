@@ -40,12 +40,11 @@ depend:
 .cpp.o: 	
 	$(CXX) $(CFLAGS) $(INCPATH) -c -o $@ $<
 
-midterm: main.o camera.o bezier.o controlpts.o 
+midterm: main.o camera.o controlpts.o
 	$(CXX) $(CFLAGS) $(INCPATH) -o $@ $^ $(LIBPATH) $(LIBS)
 	
 
 # DEPENDENCIES
 main.o: main.cpp
 camera.o: camera.cpp
-bezier.o: bezier.cpp
 controlpts.o: controlpts.cpp
