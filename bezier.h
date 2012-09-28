@@ -1,4 +1,5 @@
-
+#ifndef BEZIER_H
+#define BEZIER_H
 
 #include <iostream>
 #include <cmath>
@@ -16,3 +17,5 @@ class bezier{
 	controlpts fourth;
 	
 };
+
+#endif
