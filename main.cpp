@@ -167,7 +167,7 @@ void animateBezier()
 	float zd= p0.getZ();
 
      glPushMatrix(); {
-        myCoaster.drawCoaster(0.0,0.0,xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step);
+        myCoaster.drawCoaster(xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step);
     }; glPopMatrix(); 
     
 }
