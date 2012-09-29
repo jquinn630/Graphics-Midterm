@@ -23,7 +23,7 @@
 #include "camera.h"
 #include "controlpts.h"
 #include "bezier.h"
-#include "cart.h"
+#include "coaster.h"
 
 using namespace std;
 
@@ -50,7 +50,7 @@ GLint id; // id number for menu
 
 // declare global camera object
 camera myCam(50.0, 2.00, 1.80,0,0,0);  // declares camera object
-cart firstCart;
+coaster myCoaster;
 
 // draws axes for reference
 void drawAxes() {
@@ -171,13 +171,9 @@ void animateBezier()
 	float ypos=ya*step*step*step+yb*step*step+yc*step+yd;
 	float zpos=za*step*step*step+zb*step*step+zc*step+zd;
 
-    // declare sphere object that will follow curve.
-	//GLUquadricObj* sobj=gluNewQuadric();  // new sphere
 
      glPushMatrix(); {
-    	//glTranslatef(xpos,ypos,zpos); // translate to appriate point
-		//gluSphere(sobj,.25,10,10);  // draw sphere
-        firstCart.drawCart(xpos, ypos, zpos, 0.0, 0.0);
+        myCoaster.drawCoaster(xpos, ypos, zpos, 0.0, 0.0);
     }; glPopMatrix(); 
     
 }
