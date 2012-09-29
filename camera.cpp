@@ -30,7 +30,8 @@ camera::camera(double radius, double theta, double phi, double x , double y , do
   upx=0;
   upy=1;
   upz=0;
-  calculate_pos();
+  mode=1;
+  calculate_pos_arcball();
 }
   // get and set functions for private data members.
 double camera::get_eyex()
@@ -153,8 +154,18 @@ double camera::get_phi()
 	return cameraPhi;
 }
 
+int camera::get_mode()
+{
+	return mode;
+}
+
+void camera::set_mode(int x)
+{
+	mode=x;
+}
+
 // function that sets 9 camera parameters based on radius, theta, phi
-void camera::calculate_pos()
+void camera::calculate_pos_arcball()
 {
 	// use spherical coordinates to update position
 	 set_eyex(cameraRadius * sin(cameraTheta)*sin(cameraPhi));
@@ -163,10 +174,10 @@ void camera::calculate_pos()
 }
 
 //updates camera position
-void camera::update_pos()
+void camera::update_pos_arcball()
 {
     // updates camera position based on any variable changes.
-    calculate_pos();
+    calculate_pos_arcball();
     // calls the appropriate glu function
 	gluLookAt( eyex, eyey, eyez, 
 			   atx, aty, atz,

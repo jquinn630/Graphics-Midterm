@@ -46,10 +46,12 @@ class camera {
   double get_theta();
   void set_phi(double);
   double get_phi();
-  // function that sets 9 camera parameters based on radius, theta, phi
-  void calculate_pos();
-  // function that updates camera orientation
-  void update_pos();
+  int get_mode();
+  void set_mode(int);
+  // function that sets 9 camera parameters based on radius, theta, phi for an arcball model
+  void calculate_pos_arcball();
+  // function that updates camera orientation, for an arcball model
+  void update_pos_arcball();
   
   private:
   // variables pertaining to the arcballs
@@ -68,5 +70,7 @@ class camera {
   double upx;
   double upy;
   double upz;
+  // variable that determines camera mode
+  int mode;
 
 };

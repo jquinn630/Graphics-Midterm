@@ -52,70 +52,6 @@ GLint id; // id number for menu
 camera myCam(50.0, 2.00, 1.80,0,0,0);  // declares camera object
 coaster myCoaster;
 
-// draws axes for reference
-void drawAxes() {
-
-    glDisable(GL_LIGHTING);
-
-	// draw our axes
-    glBegin(GL_LINES); {
-		// set color white.
-        glColor3f(1,1,1);
-        
-        // set up the x axes;
-        for (int i=-10; i<=10; i++)
-         {
-           glVertex3f(-10,0,i);
-           glVertex3f(10,0,i);
-         }
-        
-        // set up z axes
-        for (int i=-10; i<=10; i++)
-         {
-           glVertex3f(i,0,-10);
-           glVertex3f(i,0,10);
-         }
-        
-    }; glEnd();
-
-    glEnable(GL_LIGHTING);
-}
-
-// function that draws the spheres that reperesent each control point.  drawControlPoints();
-void drawControlPoints()
-{
-    // set color to white for drawing spheres at control points
-	glColor3f(1,1,1);
-		
-	// draw spheres at control points
-	for (unsigned int i=0; i<points.size(); i++)
-	{
-		GLUquadricObj* temp=gluNewQuadric();  // new sphere
-		glPushMatrix();{  // push matrix
-			glTranslatef(points[i].getX(),points[i].getY(),points[i].getZ()); // translate to appriate point
-			gluSphere(temp,.25,10,10);  // draw sphere
-		}; glPopMatrix(); // pop matrix
-	}
-
-}
-
-// draws yellow lines between control point spheres that form the control cage
-void drawControlCage()
-{
-	// set color to yellow
-    glColor3f(1,1,0);
-
-  glDisable(GL_LIGHTING);
-	glBegin(GL_LINE_STRIP); {
-		for (unsigned int i=0; i<points.size(); i++)
-		{
-			glVertex3f(points[i].getX(),points[i].getY(),points[i].getZ());
-		}	
-	}; glEnd();
-  glEnable(GL_LIGHTING);
-
-}
-
 // draws a bezier curve based on control points
 void drawTrack()
 {
@@ -179,7 +115,10 @@ void renderScene(void)  {
     glLoadIdentity();
 
     // set camera position
-	myCam.update_pos();
+    if ( myCam.get_mode()==1)
+    {
+	  myCam.update_pos_arcball();
+	}
 	
     //clear the render buffer and depth buffer
 	glDrawBuffer( GL_BACK );
@@ -187,13 +126,9 @@ void renderScene(void)  {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPushMatrix(); {
-        //drawAxes();				// draw our axes so we know how we are oriented
     }; glPopMatrix();
     
     glPushMatrix(); {
-        //drawControlPoints();				// draw our control points for the bezier curve as spheres 
-    	//drawControlCage();					// draws cage for control points
-    	// draws a bezier curve for each set of four control points.  assuming there will always be N=1+3m control points.
     	drawTrack();
     }; glPopMatrix();
     
@@ -205,11 +140,31 @@ void renderScene(void)  {
     glutSwapBuffers();
 }
 
+// function to handle menu attached to middle button
+void myMenu(int value)
+{
+	if (value==1)
+	{
+		exit(0);
+	}
+}
+
+
 void normalKeys(unsigned char key, int x, int y)  
 {
     //kindly quit if the user requests!
         if (key == 27)
 			exit(0);
+			
+	id = glutCreateMenu(myMenu);
+    glutAddMenuEntry("Quit", 1);
+
+	int modi=glutGetModifiers();
+	if(modi==GLUT_ACTIVE_SHIFT)
+	{
+ 		glutAttachMenu(GLUT_LEFT_BUTTON);
+    }
+
 }
 
 // controls camera with mouse movement
@@ -257,14 +212,6 @@ void clickControl(int button, int state, int x, int y)
     oldy = y;
 }
 
-// function to handle menu attached to middle button
-void myMenu(int value)
-{
-	if (value==1)
-	{
-		exit(0);
-	}
-}
 
 //********************************************************************************
 // void myTimer(int value)
@@ -371,10 +318,6 @@ void initScene() {
     glEnable( GL_LIGHTING );
     glEnable( GL_LIGHT0 );
     
-    // setup menu to be used for middle clicking
-    id = glutCreateMenu(myMenu);
-    glutAddMenuEntry("Quit", 1);
-    glutAttachMenu(GLUT_MIDDLE_BUTTON);
    	
     // tell OpenGL not to use the material system; just use whatever we 
 	// pass with glColor*()
