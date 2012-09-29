@@ -6,7 +6,7 @@
 
 class cart{
 	public:
-		void drawCart(float,float,float,float,float);
+		void drawCart(float,float,float,float,float,float,float,float,float,float,float,float,float,float,float);
 	private:
 		float cartX,cartY,cartZ;
 		float cartTheta,cartPhi;

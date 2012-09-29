@@ -17,11 +17,11 @@
 #include "cart.h"
 #include "coaster.h"
 
-void coaster::drawCoaster(float x, float y, float z, float theta, float phi){
+void coaster::drawCoaster(float theta, float phi, float xa, float xb, float xc, float xd, float ya, float yb, float yc, float yd, float za, float zb, float zc, float zd, float step){
 	cart firstCart;
 	cart secondCart;
 	cart thirdCart;
-	firstCart.drawCart(x,y,z,theta,phi);
-	secondCart.drawCart(x+1,y+1,z+1,theta,phi);
-	thirdCart.drawCart(x+2,y+2,z+2,theta,phi);
+	firstCart.drawCart(theta,phi,xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step);
+	secondCart.drawCart(theta,phi,xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step-0.1);
+	thirdCart.drawCart(theta,phi,xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step-0.2);
 }

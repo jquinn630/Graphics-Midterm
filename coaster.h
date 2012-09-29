@@ -6,6 +6,6 @@
 
 class coaster{
 	public:
-		void drawCoaster(float,float,float,float,float);
+		void drawCoaster(float,float,float,float,float,float,float,float,float,float,float,float,float,float,float);
 	private:
 };

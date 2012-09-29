@@ -165,15 +165,9 @@ void animateBezier()
 	float zb= 3*p0.getZ() - 6*p1.getZ() +3*p2.getZ();
 	float zc= -3*p0.getZ() + 3*p1.getZ();
 	float zd= p0.getZ();
-	
-	// calculate points
-	float xpos=xa*step*step*step+xb*step*step+xc*step+xd;
-	float ypos=ya*step*step*step+yb*step*step+yc*step+yd;
-	float zpos=za*step*step*step+zb*step*step+zc*step+zd;
-
 
      glPushMatrix(); {
-        myCoaster.drawCoaster(xpos, ypos, zpos, 0.0, 0.0);
+        myCoaster.drawCoaster(0.0,0.0,xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step);
     }; glPopMatrix(); 
     
 }
