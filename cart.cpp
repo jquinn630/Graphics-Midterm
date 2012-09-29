@@ -16,8 +16,6 @@
 
 #include "cart.h"
 
-cart::cart(){}
-
 void cart::drawCart(float x, float y, float z, float theta, float phi){
 	cartX=x;
 	cartY=y;
