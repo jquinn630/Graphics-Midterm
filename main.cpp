@@ -122,7 +122,7 @@ void renderScene(void)  {
 	
     //clear the render buffer and depth buffer
 	glDrawBuffer( GL_BACK );
-    glClearColor(0,0,0,1);
+    glClearColor(1,1,1,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPushMatrix(); {
@@ -170,7 +170,7 @@ void normalKeys(unsigned char key, int x, int y)
 // controls camera with mouse movement
 void cameraControl( int x, int y)
 {
-   if ( leftClick==GLUT_DOWN)
+   if (leftClick==GLUT_DOWN)
    {
     // update camera angles
     myCam.set_theta(myCam.get_theta() + (x-oldx)*.01);
