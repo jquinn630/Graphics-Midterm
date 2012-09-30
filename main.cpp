@@ -108,6 +108,33 @@ void animateBezier()
     
 }
 
+// function to handle menu attached to middle button
+void myMenu(int value)
+{
+	if (value==1)
+	{
+		exit(0);
+	}
+	if (value==2)
+	{
+		myCam.set_mode(1);
+		myCam.set_atx(0);
+		myCam.set_aty(0);
+		myCam.set_atz(0);
+		myCam.set_theta(2.00);
+		myCam.set_theta(1.80);
+	}
+	if (value==3)
+	{
+		myCam.set_mode(2);
+		myCam.set_theta(-pi/3);
+		myCam.set_phi(pi/2.8);
+		myCam.set_eyex(30);
+		myCam.set_eyey(20);
+		myCam.set_eyez(20);
+	}
+}
+
 //render scene function.  draws everything to scene.
 void renderScene(void)  {
     //update the modelview matrix based on the camera's position
@@ -118,6 +145,11 @@ void renderScene(void)  {
     if ( myCam.get_mode()==1)
     {
 	  myCam.update_pos_arcball();
+	}
+	
+	else if (myCam.get_mode()==2)
+	{
+	  myCam.update_pos_free();
 	}
 	
     //clear the render buffer and depth buffer
@@ -140,21 +172,32 @@ void renderScene(void)  {
     glutSwapBuffers();
 }
 
-// function to handle menu attached to middle button
-void myMenu(int value)
-{
-	if (value==1)
-	{
-		exit(0);
-	}
-}
-
-
 void normalKeys(unsigned char key, int x, int y)  
 {
     //kindly quit if the user requests!
         if (key == 27)
 			exit(0);
+		
+	if (myCam.get_mode()==2)
+	{
+		float movement=.3;
+	if(key == 'w')
+    {
+       // move in
+        myCam.set_eyex(myCam.get_eyex() + myCam.get_dirx()*movement);
+        myCam.set_eyey(myCam.get_eyey() + myCam.get_diry()*movement);
+        myCam.set_eyez(myCam.get_eyez() + myCam.get_dirz()*movement);
+    }
+    if(key == 's')
+    {
+		// move out
+        myCam.set_eyex(myCam.get_eyex() - myCam.get_dirx()*movement);
+        myCam.set_eyey(myCam.get_eyey() - myCam.get_diry()*movement);
+        myCam.set_eyez(myCam.get_eyez() - myCam.get_dirz()*movement);
+    }
+    }
+    glutPostRedisplay();
+
 }
 
 // controls camera with mouse movement
@@ -198,6 +241,8 @@ void clickControl(int button, int state, int x, int y)
    	{
   	id = glutCreateMenu(myMenu);
     glutAddMenuEntry("Quit", 1);
+    glutAddMenuEntry("Arcball Mode", 2);
+    glutAddMenuEntry("Freecam Mode", 3);
     glutAttachMenu(GLUT_LEFT_BUTTON);
  	}
    else if(button == GLUT_LEFT_BUTTON)
@@ -384,7 +429,6 @@ int main(int argc, char* argv[]) {
 	} 
 	cout<<track.size()<<endl;
 
-	
 	// register all of our callbacks with GLUT
 	registerCallbacks();
 	

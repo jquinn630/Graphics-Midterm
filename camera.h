@@ -37,9 +37,15 @@ class camera {
   double get_upx();
   void set_upx( double);
   double get_upy();
-  void set_upy( double);
+  void set_upy(double);
   double get_upz();
-  void set_upz( double);
+  void set_upz(double);
+  double get_dirx();
+  void set_dirx(double);
+  double get_diry();
+  void set_diry(double);
+  double get_dirz();
+  void set_dirz(double);
   void set_radius(double);
   double get_radius();
   void set_theta(double);
@@ -52,6 +58,10 @@ class camera {
   void calculate_pos_arcball();
   // function that updates camera orientation, for an arcball model
   void update_pos_arcball();
+  // function that sets 9 camera parameters for a free cam model
+  void calculate_pos_free();
+  // function that updates camerea orientation for a free cam model
+  void update_pos_free();
   
   private:
   // variables pertaining to the arcballs
@@ -70,7 +80,11 @@ class camera {
   double upx;
   double upy;
   double upz;
-  // variable that determines camera mode
+  // variables that hold direction camera is looking at
+  double dirx;
+  double diry;
+  double dirz;
+  // variable that determines camera mode, 1 for arcball, 2 for free cam.
   int mode;
 
 };

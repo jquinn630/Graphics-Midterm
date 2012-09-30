@@ -31,6 +31,9 @@ camera::camera(double radius, double theta, double phi, double x , double y , do
   upy=1;
   upz=0;
   mode=1;
+  dirx=0;
+  diry=0;
+  dirz=0;
   calculate_pos_arcball();
 }
   // get and set functions for private data members.
@@ -164,7 +167,37 @@ void camera::set_mode(int x)
 	mode=x;
 }
 
-// function that sets 9 camera parameters based on radius, theta, phi
+double camera::get_dirx()
+{
+	return dirx;
+}
+
+void camera::set_dirx(double x)
+{
+	dirx=x;
+}
+
+double camera::get_diry()
+{
+	return diry;
+}
+
+void camera::set_diry(double y)
+{
+	diry=y;
+}
+
+double camera::get_dirz()
+{
+	return dirz;
+}
+
+void camera::set_dirz(double z)
+{
+	dirz=z;
+}
+
+// function that sets 9 camera parameters based on radius, theta, phi, for arcball
 void camera::calculate_pos_arcball()
 {
 	// use spherical coordinates to update position
@@ -173,7 +206,7 @@ void camera::calculate_pos_arcball()
      set_eyez(cameraRadius * -cos(cameraTheta)*sin(cameraPhi));	
 }
 
-//updates camera position
+//updates camera position, for arcball
 void camera::update_pos_arcball()
 {
     // updates camera position based on any variable changes.
@@ -181,5 +214,27 @@ void camera::update_pos_arcball()
     // calls the appropriate glu function
 	gluLookAt( eyex, eyey, eyez, 
 			   atx, aty, atz,
+			   upx, upy, upz );
+}
+
+// updates 9 camera parameters for free cam
+void camera::calculate_pos_free()
+{
+    dirx=  sinf(cameraTheta)*sinf(cameraPhi);
+    dirz = -cosf(cameraTheta)*sinf(cameraPhi);
+    diry = -cosf(cameraPhi);
+    //normalize directional vector
+    float mag = sqrt( dirx*dirx + diry*diry + dirz*dirz );
+    dirx /= mag;  diry /= mag;  dirz /= mag;
+}
+
+// function that updates camerea orientation for a free cam model
+void camera::update_pos_free()
+{
+	// update camera position based on variable changes for free cam
+	calculate_pos_free();
+   // calls look at function
+	gluLookAt( eyex, eyey, eyez, 
+			   eyex+dirx, eyey+diry, eyez+dirz,
 			   upx, upy, upz );
 }
