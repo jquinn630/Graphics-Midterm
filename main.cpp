@@ -155,16 +155,6 @@ void normalKeys(unsigned char key, int x, int y)
     //kindly quit if the user requests!
         if (key == 27)
 			exit(0);
-			
-	id = glutCreateMenu(myMenu);
-    glutAddMenuEntry("Quit", 1);
-
-	int modi=glutGetModifiers();
-	if(modi==GLUT_ACTIVE_SHIFT)
-	{
- 		glutAttachMenu(GLUT_LEFT_BUTTON);
-    }
-
 }
 
 // controls camera with mouse movement
@@ -184,28 +174,38 @@ void cameraControl( int x, int y)
     glutPostRedisplay();
   }
   
-  else if (rightClick==GLUT_DOWN)
-  {
-     myCam.set_radius(myCam.get_radius() + (y-oldy) * 0.03);  // change the radius based on movement
+ else if (rightClick==GLUT_DOWN)
+ {
+       myCam.set_radius(myCam.get_radius() + (y-oldy) * 0.03);  // change the radius based on movement
      // don't allow the camera radius to go below a set minimum or above a set maximum
      if(myCam.get_radius() < 10.0) 
         myCam.set_radius (10.0);
-     if(myCam.get_radius() > 40.0) 
-        myCam.set_radius (40.0);
+     if(myCam.get_radius() > 50.0) 
+        myCam.set_radius (50.0);
   	glutPostRedisplay();
-  } 
+  }
   // update old x and y positions
   oldx=x;
   oldy=y;
+  glutDetachMenu(GLUT_LEFT_BUTTON);
 }
 
 // controls the state of mouse based on usere clicking.
 void clickControl(int button, int state, int x, int y)
-{
-    if(button == GLUT_LEFT_BUTTON)
+{  
+	GLint mod=glutGetModifiers();
+    if (mod==GLUT_ACTIVE_SHIFT && state==GLUT_DOWN)
+   	{
+  	id = glutCreateMenu(myMenu);
+    glutAddMenuEntry("Quit", 1);
+    glutAttachMenu(GLUT_LEFT_BUTTON);
+ 	}
+   else if(button == GLUT_LEFT_BUTTON)
+       {
         leftClick= state;  // save info if left click
-    else if(button == GLUT_RIGHT_BUTTON)
-        rightClick = state; // save info if right click 
+        }
+    else if(button == GLUT_RIGHT_BUTTON)   
+        rightClick = state; // save info if right click  
     
     // update old x and y position
     oldx = x;
@@ -317,8 +317,7 @@ void initScene() {
     glLightfv( GL_LIGHT0, GL_AMBIENT, ambientCol );
     glEnable( GL_LIGHTING );
     glEnable( GL_LIGHT0 );
-    
-   	
+       	
     // tell OpenGL not to use the material system; just use whatever we 
 	// pass with glColor*()
     glEnable( GL_COLOR_MATERIAL );
