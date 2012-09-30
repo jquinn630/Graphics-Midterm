@@ -230,28 +230,22 @@ void cameraControl( int x, int y)
   // update old x and y positions
   oldx=x;
   oldy=y;
-  glutDetachMenu(GLUT_LEFT_BUTTON);
 }
 
 // controls the state of mouse based on usere clicking.
 void clickControl(int button, int state, int x, int y)
 {  
-	GLint mod=glutGetModifiers();
-    if (mod==GLUT_ACTIVE_SHIFT && state==GLUT_DOWN)
-   	{
-  	id = glutCreateMenu(myMenu);
-    glutAddMenuEntry("Quit", 1);
-    glutAddMenuEntry("Arcball Mode", 2);
-    glutAddMenuEntry("Freecam Mode", 3);
-    glutAttachMenu(GLUT_LEFT_BUTTON);
- 	}
-   else if(button == GLUT_LEFT_BUTTON)
+ 
+ 	GLint mod=glutGetModifiers();
+    if(button == GLUT_LEFT_BUTTON && mod!=GLUT_ACTIVE_SHIFT)
        {
         leftClick= state;  // save info if left click
         }
-    else if(button == GLUT_RIGHT_BUTTON)   
+    else if(button == GLUT_LEFT_BUTTON && mod==GLUT_ACTIVE_SHIFT)  
+       {
         rightClick = state; // save info if right click  
-    
+        }
+
     // update old x and y position
     oldx = x;
     oldy = y;
@@ -362,6 +356,12 @@ void initScene() {
     glLightfv( GL_LIGHT0, GL_AMBIENT, ambientCol );
     glEnable( GL_LIGHTING );
     glEnable( GL_LIGHT0 );
+    
+    id = glutCreateMenu(myMenu);
+    glutAddMenuEntry("Quit", 1);
+    glutAddMenuEntry("Arcball Mode", 2);
+    glutAddMenuEntry("Freecam Mode", 3);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
        	
     // tell OpenGL not to use the material system; just use whatever we 
 	// pass with glColor*()
