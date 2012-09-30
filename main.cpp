@@ -20,6 +20,7 @@
 #include <string>
 #include <ctype.h>
 #include <fstream>
+#include <sstream>
 #include "camera.h"
 #include "controlpts.h"
 #include "bezier.h"
@@ -38,6 +39,16 @@ int numPoints;   // holds total number of control points
 // controls motion of animated sphere
 float step=0.0;
 int pcount=0;
+
+// frame counter
+int framecount=0;
+
+// hold fps;
+int fps;
+
+// keeps track to time
+int currentTime=0;
+int prevTime=0;
 
 // declare pi as a floating point global var
 float pi = 3.14159;
@@ -158,14 +169,26 @@ void renderScene(void)  {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPushMatrix(); {
-    }; glPopMatrix();
+        glColor3f(0,0,0);
+		char c[10];
+		sprintf(c, "%d", fps);
+		string temp=string(c);
+        glRasterPos2f(-windowWidth/2+25,windowHeight/12);
+    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'f');
+    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'p');
+    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 's');
+    	for (unsigned int i=0; i<temp.size(); i++)
+    	{
+    		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, temp[i] );
+   		}
+   }; glPopMatrix();  // displays fps 
     
     glPushMatrix(); {
     	drawTrack();
-    }; glPopMatrix();
+    }; glPopMatrix();  // draws the track
     
     glPushMatrix(); {
-      animateBezier();     // animates curve along bezier
+      animateBezier();     // animates coaster along bezier
     }; glPopMatrix();
 	
     //push the back buffer to the screen
@@ -311,6 +334,29 @@ void resizeWindow(int w, int h) {
 	gluPerspective( 45.0f, aspectRatio, 0.1, 1000 );
 }
 
+// function that calculates fps.
+void calculatefps()
+{
+   // increment framecount
+   framecount++;
+   currentTime=glutGet(GLUT_ELAPSED_TIME);
+   // get elapsed time
+   int difference = currentTime-prevTime;
+   if (difference > 1000) // every second
+   {
+   	 fps=framecount/(difference/1000.0); // get current fps
+   	 prevTime=currentTime;  // update time
+   	 framecount=0;  //reset framecount.
+   }
+}
+
+// calculate fps when program is idle
+void idle ()
+{
+	calculatefps();
+    glutPostRedisplay ();
+}
+
 //********************************************************************************
 //	registerCallbacks()
 //
@@ -330,6 +376,8 @@ void registerCallbacks() {
 	glutMouseFunc(clickControl);
 	// control for the arcball camera
 	glutMotionFunc( cameraControl);
+	// call idle func for fps counts
+	glutIdleFunc(idle);
 }
 
 //********************************************************************************
@@ -427,7 +475,6 @@ int main(int argc, char* argv[]) {
 		bezier temp =bezier(points[i], points[i+1], points[i+2], points[i+3]);
 		track.push_back(temp);
 	} 
-	cout<<track.size()<<endl;
 
 	// register all of our callbacks with GLUT
 	registerCallbacks();
