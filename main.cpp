@@ -210,7 +210,7 @@ void renderScene(void)  {
     }
 
 	
-	glClear(GL_FRAMEBUFFER | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_FRAMEBUFFER | GL_DEPTH_BUFFER_BIT);
 	glViewport( 0, 0, windowWidth/8, windowHeight/8);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -219,7 +219,7 @@ void renderScene(void)  {
 		char c[10];
 		sprintf(c, "%d", fps);
 		string temp=string(c);
-        glRasterPos2i((GLint)(-windowWidth/14), (GLint)(-windowHeight/14));
+        glRasterPos3i(0,0,0);
     	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'f');
     	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'p');
     	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 's');
@@ -227,7 +227,6 @@ void renderScene(void)  {
     	{
     		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, temp[i] );
    		} 
-   glPopMatrix();  // displays fps 	
    glFlush();
 	
     //push the back buffer to the screen
