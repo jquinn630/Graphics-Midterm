@@ -173,7 +173,7 @@ void renderScene(void)  {
     glClearColor(1,1,1,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glViewport( 0, 0, windowWidth, windowHeight);
-    
+    glPushMatrix();
         // set camera position
     if ( myCam.get_mode()==1)
     {
@@ -208,13 +208,14 @@ void renderScene(void)  {
      	 drawT2();     // draws scenery for object type 2
    	   }; glPopMatrix();
     }
-
+    glPopMatrix();
 	
     glClear(GL_FRAMEBUFFER | GL_DEPTH_BUFFER_BIT);
+    glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+    glOrtho(-1,1,-1,1,-1,1);
 	glViewport( 0, 0, windowWidth/8, windowHeight/8);
-	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective( 45.0, windowWidth/windowHeight , 0.1f, 1000 );
         glColor3f(0,0,0);
 		char c[10];
 		sprintf(c, "%d", fps);
@@ -227,6 +228,9 @@ void renderScene(void)  {
     	{
     		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, temp[i] );
    		} 
+   	glMatrixMode(GL_PROJECTION);
+   	glPopMatrix();
+   	glMatrixMode(GL_MODELVIEW);
    glFlush();
 	
     //push the back buffer to the screen
