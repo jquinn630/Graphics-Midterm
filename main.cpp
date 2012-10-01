@@ -149,10 +149,14 @@ void myMenu(int value)
 //render scene function.  draws everything to scene.
 void renderScene(void)  {
     //update the modelview matrix based on the camera's position
-    glMatrixMode(GL_MODELVIEW);             //make sure we aren't changing the projection matrix!
-    glLoadIdentity();
-
-    // set camera position
+    glMatrixMode(GL_MODELVIEW);             
+    glLoadIdentity();	
+    //clear the render buffer and depth buffer
+	glDrawBuffer( GL_BACK );
+    glClearColor(1,1,1,1);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+        // set camera position
     if ( myCam.get_mode()==1)
     {
 	  myCam.update_pos_arcball();
@@ -163,26 +167,23 @@ void renderScene(void)  {
 	  myCam.update_pos_free();
 	}
 	
-    //clear the render buffer and depth buffer
-	glDrawBuffer( GL_BACK );
-    glClearColor(1,1,1,1);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glPushMatrix(); {
         glColor3f(0,0,0);
 		char c[10];
 		sprintf(c, "%d", fps);
 		string temp=string(c);
-        glRasterPos2f(-windowWidth/2+25,windowHeight/12);
+		glDisable(GL_TEXTURE_2D);
+        glRasterPos2i((GLint)(myCam.get_atx()-windowWidth/14), (GLint)(myCam.get_aty()-windowHeight/14));
     	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'f');
     	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'p');
     	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 's');
     	for (unsigned int i=0; i<temp.size(); i++)
     	{
     		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, temp[i] );
-   		}
-   }; glPopMatrix();  // displays fps 
-    
+   		} 
+   		glEnable(GL_TEXTURE_2D);
+   }; glPopMatrix();  // displays fps 	
+  
     glPushMatrix(); {
     	drawTrack();
     }; glPopMatrix();  // draws the track
