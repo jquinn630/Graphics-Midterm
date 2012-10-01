@@ -530,10 +530,6 @@ int main(int argc, char* argv[]) {
 		bezier temp =bezier(points[i], points[i+1], points[i+2], points[i+3]);
 		track.push_back(temp);
 	} 
-<<<<<<< HEAD
-=======
-	//cout<<track.size()<<endl;
->>>>>>> Working on arc length parameterization
 
 	// register all of our callbacks with GLUT
 	registerCallbacks();
