@@ -172,6 +172,7 @@ void renderScene(void)  {
 	glDrawBuffer( GL_BACK );
     glClearColor(1,1,1,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glViewport( 0, 0, windowWidth, windowHeight);
     
         // set camera position
     if ( myCam.get_mode()==1)
@@ -183,23 +184,6 @@ void renderScene(void)  {
 	{
 	  myCam.update_pos_free();
 	}
-	
-    glPushMatrix(); {
-        glColor3f(0,0,0);
-		char c[10];
-		sprintf(c, "%d", fps);
-		string temp=string(c);
-		glDisable(GL_TEXTURE_2D);
-        glRasterPos2i((GLint)(myCam.get_atx()-windowWidth/14), (GLint)(myCam.get_aty()-windowHeight/14));
-    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'f');
-    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'p');
-    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 's');
-    	for (unsigned int i=0; i<temp.size(); i++)
-    	{
-    		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, temp[i] );
-   		} 
-   		glEnable(GL_TEXTURE_2D);
-   }; glPopMatrix();  // displays fps 	
   
     glPushMatrix(); {
     	drawTrack();
@@ -224,6 +208,27 @@ void renderScene(void)  {
      	 drawT2();     // draws scenery for object type 2
    	   }; glPopMatrix();
     }
+
+	
+	glClear(GL_FRAMEBUFFER | GL_DEPTH_BUFFER_BIT);
+	glViewport( 0, 0, windowWidth/8, windowHeight/8);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective( 45.0, windowWidth/windowHeight , 0.1f, 1000 );
+        glColor3f(0,0,0);
+		char c[10];
+		sprintf(c, "%d", fps);
+		string temp=string(c);
+        glRasterPos2i((GLint)(-windowWidth/14), (GLint)(-windowHeight/14));
+    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'f');
+    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'p');
+    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 's');
+    	for (unsigned int i=0; i<temp.size(); i++)
+    	{
+    		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, temp[i] );
+   		} 
+   glPopMatrix();  // displays fps 	
+   glFlush();
 	
     //push the back buffer to the screen
     glutSwapBuffers();
