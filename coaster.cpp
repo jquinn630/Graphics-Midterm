@@ -20,9 +20,7 @@
 void coaster::drawCoaster(float xa, float xb, float xc, float xd, float ya, float yb, float yc, float yd, float za, float zb, float zc, float zd, float step){
 	cart firstCart;
 	cart secondCart;
-	cart thirdCart;
 
 	firstCart.drawCart(xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step);
-	secondCart.drawCart(xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step-0.1);
-	thirdCart.drawCart(xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step-0.2);
+	//secondCart.drawCart(xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step-0.1);
 }

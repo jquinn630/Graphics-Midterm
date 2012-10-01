@@ -98,9 +98,6 @@ void animateBezier()
 	controlpts p2 =points[pcount+2];
 	controlpts p3 =points[pcount+3];
 
-  	// set color to red
-  	glColor3f(1,0,0);
-  
     // calculate x coefficients
 	float xa= -1 * p0.getX() +3*p1.getX() - 3*p2.getX() +p3.getX();
 	float xb= 3*p0.getX() - 6*p1.getX() +3*p2.getX();
@@ -533,6 +530,10 @@ int main(int argc, char* argv[]) {
 		bezier temp =bezier(points[i], points[i+1], points[i+2], points[i+3]);
 		track.push_back(temp);
 	} 
+<<<<<<< HEAD
+=======
+	//cout<<track.size()<<endl;
+>>>>>>> Working on arc length parameterization
 
 	// register all of our callbacks with GLUT
 	registerCallbacks();
