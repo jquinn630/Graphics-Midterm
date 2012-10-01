@@ -36,6 +36,12 @@ vector<controlpts> points; // holds points read in from file
 vector<bezier> track;
 int numPoints;   // holds total number of control points
 
+// scenery variables
+int numObjectst1;
+int numObjectst2;
+vector<controlpts> objt1;
+vector<controlpts> objt2;
+
 // controls motion of animated sphere
 float step=0.0;
 int pcount=0;
@@ -119,6 +125,20 @@ void animateBezier()
     
 }
 
+void drawT1()
+{
+	glColor3f(0,0,1);
+	glRotatef(270,1,0,0);
+	glutSolidCone(1.7,3.0,5,5);
+}
+
+void drawT2()
+{
+	glColor3f(.7,.7,0);
+	glScalef(2,2,2);
+	glutSolidOctahedron();
+}
+
 // function to handle menu attached to middle button
 void myMenu(int value)
 {
@@ -191,6 +211,22 @@ void renderScene(void)  {
     glPushMatrix(); {
       animateBezier();     // animates coaster along bezier
     }; glPopMatrix();
+    
+    for (unsigned int i=0; i<objt1.size(); i++)
+    {
+    	glPushMatrix(); {
+    	   	glTranslatef(objt1[i].getX(), objt1[i].getY(), objt1[i].getZ());
+      		drawT1();      // draws scenery for object type 1
+   		 }; glPopMatrix();
+    }
+    
+    for (unsigned int j=0; j<objt2.size(); j++)
+    {
+   	   glPushMatrix(); {
+   	     glTranslatef(objt2[j].getX(), objt2[j].getY(), objt2[j].getZ());
+     	 drawT2();     // draws scenery for object type 2
+   	   }; glPopMatrix();
+    }
 	
     //push the back buffer to the screen
     glutSwapBuffers();
@@ -465,13 +501,34 @@ int main(int argc, char* argv[]) {
 	
 	// store points in vector of control points
 	numPoints=rawpoints[0];
+	int numcounter;
 	for(int i=1; i<=numPoints*3; i+=3)
 	{
 		controlpts temp(rawpoints[i],rawpoints[i+1],rawpoints[i+2]);
 		points.push_back(temp);
+		numcounter=i;
 	}
 	
-		for (unsigned int i=0; i<points.size()-3; i+=3)
+	numObjectst1=rawpoints[numcounter+3];
+	
+	int numcounter2;
+	for (int j=numcounter+4; j<numcounter+4+(numObjectst1*3);  j+=3)
+	{
+	   	controlpts temp(rawpoints[j],rawpoints[j+1],rawpoints[j+2]);
+		objt1.push_back(temp);
+		numcounter2=j;
+	}
+	
+	numObjectst2=rawpoints[numcounter2+3];
+	
+	for (int k=numcounter2+4; k<numcounter2+4+(numObjectst2*3);  k+=3)
+	{
+	   	controlpts temp(rawpoints[k],rawpoints[k+1],rawpoints[k+2]);
+		objt2.push_back(temp);
+	} 
+	
+	
+	for (unsigned int i=0; i<points.size()-3; i+=3)
 	{
 		bezier temp =bezier(points[i], points[i+1], points[i+2], points[i+3]);
 		track.push_back(temp);
