@@ -4,8 +4,10 @@
 
 // header file for a coaster object which connects a bunch of cart objects using composition
 
+#include "bezier.h"
+
 class coaster{
 	public:
-		void drawCoaster(float,float,float,float,float,float,float,float,float,float,float,float,float);
+		void drawCoaster(bezier,float);
 	private:
 };

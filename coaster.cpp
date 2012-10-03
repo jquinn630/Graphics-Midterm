@@ -16,11 +16,12 @@
 
 #include "cart.h"
 #include "coaster.h"
+#include "bezier.h"
 
-void coaster::drawCoaster(float xa, float xb, float xc, float xd, float ya, float yb, float yc, float yd, float za, float zb, float zc, float zd, float step){
+void coaster::drawCoaster(bezier bez, float step){
 	cart firstCart;
 	cart secondCart;
 
-	firstCart.drawCart(xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step);
-	//secondCart.drawCart(xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step-0.1);
+	firstCart.drawCart(bez,step);
+	secondCart.drawCart(bez,step-0.1);
 }

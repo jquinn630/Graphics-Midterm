@@ -4,9 +4,11 @@
 
 // header file for a single coaster car
 
+#include "bezier.h"
+
 class cart{
 	public:
-		void drawCart(float,float,float,float,float,float,float,float,float,float,float,float,float);
+		void drawCart(bezier, float);
 	private:
 		float cartX,cartY,cartZ;
 		float cartTheta,cartPhi;

@@ -92,32 +92,10 @@ void drawTrack()
 // animates a red sphere to follow the bezier curve.
 void animateBezier()
 {
-    // get bezier points
-	controlpts p0 =points[pcount];
-	controlpts p1 =points[pcount+1];
-	controlpts p2 =points[pcount+2];
-	controlpts p3 =points[pcount+3];
-
-    // calculate x coefficients
-	float xa= -1 * p0.getX() +3*p1.getX() - 3*p2.getX() +p3.getX();
-	float xb= 3*p0.getX() - 6*p1.getX() +3*p2.getX();
-	float xc= -3*p0.getX() + 3*p1.getX();
-	float xd= p0.getX();
-	
-    // calculate y coefficients
-	float ya= -1 * p0.getY() +3*p1.getY() -3*p2.getY() +p3.getY();
-	float yb= 3*p0.getY() - 6*p1.getY() +3*p2.getY();
-	float yc= -3*p0.getY() + 3*p1.getY();
-	float yd= p0.getY();
-	
-	// calculate z coefficients
-	float za= -1 * p0.getZ() +3*p1.getZ() -3*p2.getZ() +p3.getZ();
-	float zb= 3*p0.getZ() - 6*p1.getZ() +3*p2.getZ();
-	float zc= -3*p0.getZ() + 3*p1.getZ();
-	float zd= p0.getZ();
-
+     bezier b=track[pcount];
+     
      glPushMatrix(); {
-        myCoaster.drawCoaster(xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step);
+        myCoaster.drawCoaster(b,step);
     }; glPopMatrix(); 
     
 }
@@ -329,20 +307,20 @@ void clickControl(int button, int state, int x, int y)
 void myTimer(int value) {
     
     // handle animation of sphere along curve
-    if(step<1&&pcount<numPoints-3)
+    if(step<track[pcount].getMaxLength()&&pcount<track.size())
       {
-      	step+=.004;
+      	step+=.1;
       }
-    else if(step>1&&pcount<numPoints-3)
+    else if(step>track[pcount].getMaxLength()&&pcount<track.size())
       {
-    	step=0;
-    	pcount+=3;
+    	step=step-track[pcount].getMaxLength();
+    	pcount+=1;
       }
       
-    if (pcount>numPoints-3)
+    if (pcount>=track.size())
       {
+    	step=0;
         pcount=0;
-        step=0.0;
 	  }  // if sphere reaches the end of the curve, send it back to the beginning.
 	  
 	// tell GLUT to update the display
