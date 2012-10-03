@@ -16,47 +16,6 @@ bezier::bezier(controlpts w, controlpts x, controlpts y, controlpts z)
 	maxLength=computeMaxLength();
 }
 
-controlpts bezier::computeCurve(float t)
-{
-	// calculate x coefficients
-	float xa= -1 * first.getX() +3*second.getX() - 3*third.getX() +fourth.getX();
-	float xb= 3*first.getX() - 6*second.getX() +3*third.getX();
-	float xc= -3*first.getX() + 3*second.getX();
-	float xd= first.getX();
-	
-	// calculate y coefficients
-	float ya= -1 * first.getY() +3*second.getY() -3*third.getY() +fourth.getY();
-	float yb= 3*first.getY() - 6*second.getY() +3*third.getY();
-	float yc= -3*first.getY() + 3*second.getY();
-	float yd= first.getY();
-	
-	// calculate z coefficients
-	float za= -1 * first.getZ() +3*second.getZ() -3*third.getZ() +fourth.getZ();
-	float zb= 3*first.getZ() - 6*second.getZ() +3*third.getZ();
-	float zc= -3*first.getZ() + 3*second.getZ();
-	float zd= first.getZ();
-	
-	// calculate
-    float Xpos=xa*t*t*t+xb*t*t+xc*t+xd;
-    float Ypos=ya*t*t*t+yb*t*t+yc*t+yd;
-    float Zpos=za*t*t*t+zb*t*t+zc*t+zd;
-
-    t+=0.004;
-	float nextX=xa*t*t*t+xb*t*t+xc*t+xd;
-	float nextY=ya*t*t*t+yb*t*t+yc*t+yd;
-	float nextZ=za*t*t*t+zb*t*t+zc*t+zd;
-	// calculate Theta
-	float deltaX = nextX - Xpos;
-	float deltaY = nextY - Ypos;
-	float deltaZ = nextZ - Zpos;
-	float theta = atan(deltaX/deltaZ);
-	// calculate Phi
-	float phi = atan(deltaY/deltaX);
-    
-    return controlpts(Xpos,Ypos,Zpos,theta,phi);
-
-}
-
 float bezier::computeMaxLength()
 {
 
@@ -104,7 +63,7 @@ float bezier::getMaxLength()
 	return maxLength;
 }
 
-controlpts bezier::computeAnimation(float s)
+controlpts bezier::computeCurve(float s)
 {
 	// calculate x coefficients
 	float xa= -1 * first.getX() +3*second.getX() - 3*third.getX() +fourth.getX();
@@ -124,7 +83,7 @@ controlpts bezier::computeAnimation(float s)
 	float zc= -3*first.getZ() + 3*second.getZ();
 	float zd= first.getZ();
  
-    float t;
+    float t,ratio;
 	for (unsigned int i=0; i<lookUp.size()-1; i++)
 	{
 		if (s>lookUp[i]&&s<lookUp[i+1])
@@ -132,17 +91,27 @@ controlpts bezier::computeAnimation(float s)
 			t=float(i)/100;	
 		  	float difference=lookUp[i+1]-lookUp[i];
 		  	float sstep=s-lookUp[i];
-		  	float ratio=sstep/difference;
+		  	ratio=sstep/difference;
 		  	ratio*=.01;
 		  	t+=ratio; 
-		  	cout<<t<<endl;
 		  	break;
 		  }
 	}
-		// calculate
+
+	// calculate
     float xpos=xa*t*t*t+xb*t*t+xc*t+xd;
     float ypos=ya*t*t*t+yb*t*t+yc*t+yd;
     float zpos=za*t*t*t+zb*t*t+zc*t+zd;
-    return controlpts(xpos,ypos,zpos);
-		
+    t+=ratio;
+	float nextX=xa*t*t*t+xb*t*t+xc*t+xd;
+	float nextY=ya*t*t*t+yb*t*t+yc*t+yd;
+	float nextZ=za*t*t*t+zb*t*t+zc*t+zd;
+	// calculate Theta
+	float deltaX = nextX - xpos;
+	float deltaY = nextY - ypos;
+	float deltaZ = nextZ - zpos;
+	float theta = atan(deltaX/deltaZ);
+	// calculate Phi
+	float phi = atan(deltaY/deltaX);
+    return controlpts(xpos,ypos,zpos,theta,phi);
 }

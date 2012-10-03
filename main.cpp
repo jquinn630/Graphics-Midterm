@@ -46,7 +46,7 @@ vector<controlpts> objt2;
 
 // controls motion of animated sphere
 float step=0.0;
-int pcount=0;
+unsigned int pcount=0;
 
 // frame counter
 int framecount=0;
@@ -72,18 +72,32 @@ GLuint trackList;
 camera myCam(50.0, 2.00, 1.80,0,0,0);  // declares camera object
 coaster myCoaster;
 
+void drawGround() {
+  // draw the parking lot in which the car drives
+   glDisable(GL_LIGHTING);
+        glColor3f(0.4,0.4,0.4);
+    glBegin(GL_QUADS);{
+      glVertex3f(-15,-5,-15);
+      glVertex3f(15,-5,-15);
+      glVertex3f(15,-5,15);
+      glVertex3f(-15,-5,15);
+    };glEnd();
+   glEnable(GL_LIGHTING);
+}
+
 void drawTrackPiece(){
   glDisable(GL_LIGHTING);
-  glColor3f(0.0,0.0,0.0);
     glBegin(GL_LINES);{
+        glColor3f(1.0,1.0,1.0);
         glVertex3f(0,0,-0.5);
         glVertex3f(0,0,0.5);
         glVertex3f(-0.25,0,0.5);
         glVertex3f(0.25,0,0.5);
         glVertex3f(-0.25,0,-0.5);
         glVertex3f(0.25,0,-0.5);
+        glColor3f(0.0,0.0,0.0);
         glVertex3f(0,0,0);
-        glVertex3f(0,-0.5,0);
+        glVertex3f(0,-5,0);
     };glEnd();
   glEnable(GL_LIGHTING);
 }
@@ -93,14 +107,14 @@ void generateTrackList(){
   trackList = glGenLists(1); // create the list
   glNewList(trackList,GL_COMPILE);
   for (unsigned int i=0; i<track.size(); i++){
-  	for (float t=0; t<=1; t+=0.1){
+  	for (float t=0; t<=track[pcount].getMaxLength(); t+=0.5){
       	controlpts temp = track[i].computeCurve(t);
         glPushMatrix();{
              glTranslatef(temp.getX(),temp.getY(),temp.getZ());
              glRotatef(temp.getTheta()+90, 0.0, 1.0, 0.0);
-            glTranslatef(-temp.getX(),-temp.getY(),-temp.getZ());
-              // position track
-              glTranslatef(temp.getX(),temp.getY(),temp.getZ());
+             glTranslatef(-temp.getX(),-temp.getY(),-temp.getZ());
+             // position track
+             glTranslatef(temp.getX(),temp.getY(),temp.getZ());
       	     drawTrackPiece();
         };glPopMatrix();
     }
@@ -116,14 +130,8 @@ void animateBezier()
      bezier b=track[pcount];
      
      glPushMatrix(); {
-<<<<<<< HEAD
         myCoaster.drawCoaster(b,step);
     }; glPopMatrix(); 
-    
-=======
-        myCoaster.drawCoaster(xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step);
-     };glPopMatrix(); 
->>>>>>> created rivets for each track piece. Added theta and phi members to controlpoints class
 }
 
 void drawT1()
@@ -174,7 +182,7 @@ void renderScene(void)  {
     glLoadIdentity();	
     //clear the render buffer and depth buffer
 	glDrawBuffer( GL_BACK );
-    glClearColor(1,1,1,1);
+    glClearColor(0,0,1,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glViewport( 0, 0, windowWidth, windowHeight);
     glPushMatrix();
@@ -190,10 +198,14 @@ void renderScene(void)  {
 	}
   
     glPushMatrix(); {
+      drawGround();     // animates coaster along bezier
+    }; glPopMatrix();
+
+    glPushMatrix(); {
       animateBezier();     // animates coaster along bezier
     }; glPopMatrix();
 
-    for (unsigned int i=0; i<objt1.size(); i++)
+    /*for (unsigned int i=0; i<objt1.size(); i++)
     {
     	glPushMatrix(); {
     	   	glTranslatef(objt1[i].getX(), objt1[i].getY(), objt1[i].getZ());
@@ -207,7 +219,7 @@ void renderScene(void)  {
    	     glTranslatef(objt2[j].getX(), objt2[j].getY(), objt2[j].getZ());
      	 drawT2();     // draws scenery for object type 2
    	   }; glPopMatrix();
-    }
+    }*/
 
     glCallList(trackList);
     glPopMatrix();
@@ -329,28 +341,21 @@ void clickControl(int button, int state, int x, int y)
 //********************************************************************************
 void myTimer(int value) {
     
-    // handle animation of sphere along curve
-    if(step<track[pcount].getMaxLength()&&pcount<track.size())
+    // handle animation of cart along curve
+    if(step<track[pcount].getMaxLength())
       {
-      	step+=.1;
+        step+=0.1;
       }
-    else if(step>track[pcount].getMaxLength()&&pcount<track.size())
+    else if(step>track[pcount].getMaxLength())
       {
     	step=step-track[pcount].getMaxLength();
     	pcount+=1;
       }
       
-    if (pcount>=track.size())
-      {
+    if (pcount>=track.size()){
     	step=0;
         pcount=0;
-<<<<<<< HEAD
-	  }  // if sphere reaches the end of the curve, send it back to the beginning.
-=======
-        step=0.0;
-	  }  // if cart reaches the end of the curve, send it back to the beginning.
->>>>>>> created rivets for each track piece. Added theta and phi members to controlpoints class
-	  
+	  }
 	// tell GLUT to update the display
     glutPostRedisplay();
 	// and register our timer again
@@ -402,7 +407,7 @@ void calculatefps()
 void idle ()
 {
 	calculatefps();
-    glutPostRedisplay ();
+  glutPostRedisplay ();
 }
 
 //********************************************************************************
