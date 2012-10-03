@@ -26,6 +26,8 @@
 #include "bezier.h"
 #include "coaster.h"
 
+#define PI 3.14159
+
 using namespace std;
 
 // declare window size global variables
@@ -64,27 +66,46 @@ GLint leftClick, rightClick;    // holds state of left and right mouse buttons.
 float oldx=0, oldy=0;    // holds previous x and y position of the mouse
 
 GLint id; // id number for menu
+GLuint trackList;
 
 // declare global camera object
 camera myCam(50.0, 2.00, 1.80,0,0,0);  // declares camera object
 coaster myCoaster;
 
+void drawTrackPiece(){
+  glDisable(GL_LIGHTING);
+  glColor3f(0.0,0.0,0.0);
+    glBegin(GL_LINES);{
+        glVertex3f(0,0,-0.5);
+        glVertex3f(0,0,0.5);
+        glVertex3f(-0.25,0,0.5);
+        glVertex3f(0.25,0,0.5);
+        glVertex3f(-0.25,0,-0.5);
+        glVertex3f(0.25,0,-0.5);
+        glVertex3f(0,0,0);
+        glVertex3f(0,-0.5,0);
+    };glEnd();
+  glEnable(GL_LIGHTING);
+}
+
 // draws a bezier curve based on control points
-void drawTrack()
-{
-	glDisable(GL_LIGHTING);
-   glColor3f(0,0,1);
-   glBegin(GL_LINE_STRIP);{
-   for (unsigned int i=0; i<track.size(); i++)
-   {
-	for ( float t=0; t<=1; t+=.01)
-    {
-    	controlpts temp = track[i].computeCurve(t);
-    	glVertex3f(temp.getX(),temp.getY(), temp.getZ());
+void generateTrackList(){
+  trackList = glGenLists(1); // create the list
+  glNewList(trackList,GL_COMPILE);
+  for (unsigned int i=0; i<track.size(); i++){
+  	for (float t=0; t<=1; t+=0.1){
+      	controlpts temp = track[i].computeCurve(t);
+        glPushMatrix();{
+             glTranslatef(temp.getX(),temp.getY(),temp.getZ());
+             glRotatef(temp.getTheta()+90, 0.0, 1.0, 0.0);
+            glTranslatef(-temp.getX(),-temp.getY(),-temp.getZ());
+              // position track
+              glTranslatef(temp.getX(),temp.getY(),temp.getZ());
+      	     drawTrackPiece();
+        };glPopMatrix();
     }
-   }
-   }; glEnd();
-	glEnable(GL_LIGHTING);
+  }
+  glEndList();
 } 
 
 
@@ -95,9 +116,14 @@ void animateBezier()
      bezier b=track[pcount];
      
      glPushMatrix(); {
+<<<<<<< HEAD
         myCoaster.drawCoaster(b,step);
     }; glPopMatrix(); 
     
+=======
+        myCoaster.drawCoaster(xa,xb,xc,xd,ya,yb,yc,yd,za,zb,zc,zd,step);
+     };glPopMatrix(); 
+>>>>>>> created rivets for each track piece. Added theta and phi members to controlpoints class
 }
 
 void drawT1()
@@ -164,13 +190,9 @@ void renderScene(void)  {
 	}
   
     glPushMatrix(); {
-    	drawTrack();
-    }; glPopMatrix();  // draws the track
-    
-    glPushMatrix(); {
       animateBezier();     // animates coaster along bezier
     }; glPopMatrix();
-    
+
     for (unsigned int i=0; i<objt1.size(); i++)
     {
     	glPushMatrix(); {
@@ -186,8 +208,10 @@ void renderScene(void)  {
      	 drawT2();     // draws scenery for object type 2
    	   }; glPopMatrix();
     }
+
+    glCallList(trackList);
     glPopMatrix();
-	
+
     glClear(GL_FRAMEBUFFER | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
@@ -210,8 +234,7 @@ void renderScene(void)  {
    	glPopMatrix();
    	glMatrixMode(GL_MODELVIEW);
    glFlush();
-	
-    //push the back buffer to the screen
+      //push the back buffer to the screen
     glutSwapBuffers();
 }
 
@@ -321,7 +344,12 @@ void myTimer(int value) {
       {
     	step=0;
         pcount=0;
+<<<<<<< HEAD
 	  }  // if sphere reaches the end of the curve, send it back to the beginning.
+=======
+        step=0.0;
+	  }  // if cart reaches the end of the curve, send it back to the beginning.
+>>>>>>> created rivets for each track piece. Added theta and phi members to controlpoints class
 	  
 	// tell GLUT to update the display
     glutPostRedisplay();
@@ -442,6 +470,7 @@ void initScene() {
     // is rounded or has a smooth surface, this is probably a good idea;
     // if your object has a blocky surface, you probably want to disable this.
     glShadeModel( GL_SMOOTH );
+    generateTrackList();
 }
 
 int main(int argc, char* argv[]) {

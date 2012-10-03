@@ -20,7 +20,6 @@
 
 void coaster::drawCoaster(bezier bez, float step){
 	cart firstCart;
-	cart secondCart;
 
 	firstCart.drawCart(bez,step);
 	secondCart.drawCart(bez,step-0.1);

@@ -4,6 +4,8 @@
 
 using namespace std;
 
+#define PI 3.14159
+
 bezier::bezier(controlpts w, controlpts x, controlpts y, controlpts z)
 {
 	first=controlpts(w);
@@ -35,11 +37,23 @@ controlpts bezier::computeCurve(float t)
 	float zd= first.getZ();
 	
 	// calculate
-    float xpos=xa*t*t*t+xb*t*t+xc*t+xd;
-    float ypos=ya*t*t*t+yb*t*t+yc*t+yd;
-    float zpos=za*t*t*t+zb*t*t+zc*t+zd;
+    float Xpos=xa*t*t*t+xb*t*t+xc*t+xd;
+    float Ypos=ya*t*t*t+yb*t*t+yc*t+yd;
+    float Zpos=za*t*t*t+zb*t*t+zc*t+zd;
+
+    t+=0.004;
+	float nextX=xa*t*t*t+xb*t*t+xc*t+xd;
+	float nextY=ya*t*t*t+yb*t*t+yc*t+yd;
+	float nextZ=za*t*t*t+zb*t*t+zc*t+zd;
+	// calculate Theta
+	float deltaX = nextX - Xpos;
+	float deltaY = nextY - Ypos;
+	float deltaZ = nextZ - Zpos;
+	float theta = atan(deltaX/deltaZ);
+	// calculate Phi
+	float phi = atan(deltaY/deltaX);
     
-    return controlpts(xpos,ypos,zpos);
+    return controlpts(Xpos,Ypos,Zpos,theta,phi);
 
 }
 

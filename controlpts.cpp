@@ -4,11 +4,15 @@
 
 #include "controlpts.h"
 
-controlpts::controlpts(double a, double b, double c)
+#define PI 3.14159
+
+controlpts::controlpts(double a, double b, double c, double t, double p)
 {
 	x=a;
 	y=b;
 	z=c;
+	theta=t;
+	phi=p;
 }
 
 double controlpts::getX()
@@ -24,6 +28,16 @@ double controlpts::getY()
 double controlpts::getZ()
 {
 	return z;
+}
+
+double controlpts::getTheta()
+{
+	return (180*theta)/PI;
+}
+
+double controlpts::getPhi()
+{
+	return phi;
 }
 
 controlpts operator *( controlpts& y, float x)

@@ -26,15 +26,19 @@ class controlpts
   friend controlpts operator *( const controlpts& y, float x);
 
   public:
-  controlpts(double a=0, double b=0, double c=0);
+  controlpts(double a=0, double b=0, double c=0, double t=0, double p=0);
   double getX();
   double getY();
   double getZ();
+  double getTheta();
+  double getPhi();
   
   private:
   double x;
   double y;
   double z;
+  double theta;
+  double phi;
   
 };
 
