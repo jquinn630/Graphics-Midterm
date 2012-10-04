@@ -347,7 +347,7 @@ void myTimer(int value) {
     // handle animation of cart along curve
     if(step<track[pcount].getMaxLength())
       {
-        step+=0.1;
+        step+=0.05;
       }
     else if(step>track[pcount].getMaxLength())
       {
@@ -363,7 +363,7 @@ void myTimer(int value) {
 	// tell GLUT to update the display
     glutPostRedisplay();
 	// and register our timer again
-    glutTimerFunc((unsigned int)(1000.0 / 60.0), myTimer, 0);
+    glutTimerFunc((unsigned int)(1000.0 / 120.0), myTimer, 0);
 }
 
 //********************************************************************************
@@ -428,7 +428,7 @@ void registerCallbacks() {
 	// window reshape callback
     glutReshapeFunc( resizeWindow );
 	// register our timer with GLUT
-	glutTimerFunc( (unsigned int)(1000.0 / 60.0), myTimer, 0 );
+	glutTimerFunc( (unsigned int)(1000.0 / 120.0), myTimer, 0 );
     // clicking control that helps aid the arcball
 	glutMouseFunc(clickControl);
 	// control for the arcball camera

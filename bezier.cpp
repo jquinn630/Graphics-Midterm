@@ -102,7 +102,7 @@ controlpts bezier::computeCurve(float s)
     float xpos=xa*t*t*t+xb*t*t+xc*t+xd;
     float ypos=ya*t*t*t+yb*t*t+yc*t+yd;
     float zpos=za*t*t*t+zb*t*t+zc*t+zd;
-    t+=ratio;
+    t+=.005;
 	float nextX=xa*t*t*t+xb*t*t+xc*t+xd;
 	float nextY=ya*t*t*t+yb*t*t+yc*t+yd;
 	float nextZ=za*t*t*t+zb*t*t+zc*t+zd;
@@ -112,6 +112,6 @@ controlpts bezier::computeCurve(float s)
 	float deltaZ = nextZ - zpos;
 	float theta = atan(deltaX/deltaZ);
 	// calculate Phi
-	float phi = atan(deltaY/deltaX);
+	float phi = abs(asin(deltaY/sqrt(deltaX*deltaX+deltaY*deltaY+deltaZ*deltaZ)));
     return controlpts(xpos,ypos,zpos,theta,phi);
 }
