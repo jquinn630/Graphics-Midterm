@@ -244,28 +244,40 @@ void renderScene(void)  {
 
     glClear(GL_FRAMEBUFFER | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
+
 	glPushMatrix();
-    glOrtho(-1,1,-1,1,-1,1);
-	glViewport( 0, 0, windowWidth/8, windowHeight/8);
-	glLoadIdentity();
-        glColor3f(0,0,0);
-		char c[10];
-		sprintf(c, "%d", fps);
-		string temp=string(c);
-        glRasterPos3i(0,0,0);
-    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'F');
+      glOrtho(-1,1,-1,1,-1,1);
+    	glViewport(0, windowHeight-windowHeight/12, windowWidth/12, windowHeight/12);
+    	glLoadIdentity();
+      glColor3f(0,0,0);
+    	char c[10];
+    	sprintf(c, "%d", fps);
+    	string temp=string(c);
+      glRasterPos3i(0,0,0);
+      glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'F');
     	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'P');
-    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'S');
+     	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'S');
       glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ':');
       glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
-    	for (unsigned int i=0; i<temp.size(); i++)
-    	{
-    		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, temp[i] );
-   		} 
-   	glMatrixMode(GL_PROJECTION);
-   	glPopMatrix();
-   	glMatrixMode(GL_MODELVIEW);
-   glFlush();
+        	for (unsigned int i=0; i<temp.size(); i++)
+        	{
+        		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, temp[i] );
+       		} 
+      glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+
+  /*glPushMatrix();
+      glOrtho(-1,1,-1,1,-1,1);
+      glViewport(windowWidth-windowWidth/4, windowHeight-windowHeight/4, windowWidth/4, windowHeight/4);
+      glLoadIdentity();
+          glBegin(GL_LINES);{
+
+          };glEnd();
+      glMatrixMode(GL_PROJECTION);
+  glPopMatrix();*/
+
+  glMatrixMode(GL_MODELVIEW);
+  glFlush();
       //push the back buffer to the screen
     glutSwapBuffers();
 }

@@ -238,3 +238,22 @@ void camera::update_pos_free()
 			   eyex+dirx, eyey+diry, eyez+dirz,
 			   upx, upy, upz );
 }
+
+void camera::calculate_first_person(float x, float y, float z)
+{
+	// use spherical coordinates to update position
+	 set_eyex(x);
+     set_eyey(y);
+     set_eyez(z);	
+}
+
+//updates camera position, for arcball
+void camera::update_first_person(float x, float y, float z)
+{
+    // updates camera position based on any variable changes.
+    calculate_first_person(x,y,z);
+    // calls the appropriate glu function
+	gluLookAt( eyex, eyey, eyez, 
+			   atx, aty, atz,
+			   upx, upy, upz );
+}

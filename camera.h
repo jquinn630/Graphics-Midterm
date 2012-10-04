@@ -62,6 +62,9 @@ class camera {
   void calculate_pos_free();
   // function that updates camerea orientation for a free cam model
   void update_pos_free();
+
+  void calculate_first_person(float,float,float);
+  void update_first_person(float,float,float);
   
   private:
   // variables pertaining to the arcballs
