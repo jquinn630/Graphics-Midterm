@@ -215,9 +215,15 @@ void renderScene(void)  {
     if ( myCam.get_mode()==1)
     {
 	  myCam.update_pos_arcball();
+<<<<<<< HEAD
     //myCam.set_atx(myCoaster.firstCart.getCartX());
     //myCam.set_aty(myCoaster.firstCart.getCartY());
     //myCam.set_atz(myCoaster.firstCart.getCartZ());
+=======
+      myCam.set_atx(myCoaster.firstCart.getCartX());
+      myCam.set_aty(myCoaster.firstCart.getCartY());
+    myCam.set_atz(myCoaster.firstCart.getCartZ());
+>>>>>>> ..
 	}
 	
 	else if (myCam.get_mode()==2)
