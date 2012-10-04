@@ -69,11 +69,10 @@ GLint id; // id number for menu
 GLuint trackList;
 
 // declare global camera object
-camera myCam(50.0, 2.00, 1.80,0,0,0);  // declares camera object
+camera myCam(30.0, 2.00, 1.80,0,0,0);  // declares camera object
 coaster myCoaster;
 
 void drawGround() {
-  // draw the parking lot in which the car drives
    glDisable(GL_LIGHTING);
         glColor3f(0.4,0.4,0.4);
     glBegin(GL_QUADS);{
@@ -85,7 +84,7 @@ void drawGround() {
    glEnable(GL_LIGHTING);
 }
 
-void drawTrackPiece(float height){
+void drawTrackPiece(){
   glDisable(GL_LIGHTING);
     glBegin(GL_LINES);{
         glColor3f(1.0,1.0,1.0);
@@ -96,16 +95,24 @@ void drawTrackPiece(float height){
         glVertex3f(-0.25,0,-0.5);
         glVertex3f(0.25,0,-0.5);
         glColor3f(0.0,0.0,0.0);
-        //glVertex3f(0,0,0);
-        //glVertex3f(0,-height-5.0,0);
     };glEnd();
   glEnable(GL_LIGHTING);
+}
+
+void drawTrackSupport(float height){
+  glDisable(GL_LIGHTING);
+    glBegin(GL_LINES);{
+        glColor3f(0.0,0.0,0.0);
+        glVertex3f(0,0,0);
+        glVertex3f(0,-height-5.0,0);
+    };glEnd();
 }
 
 // draws a bezier curve based on control points
 void generateTrackList(){
   trackList = glGenLists(1); // create the list
   glNewList(trackList,GL_COMPILE);
+  int support=0;
   for (unsigned int i=0; i<track.size(); i++){
   	for (float t=0; t<=track[pcount].getMaxLength(); t+=0.5){
       	controlpts temp = track[i].computeCurve(t);
@@ -116,8 +123,15 @@ void generateTrackList(){
              glTranslatef(-temp.getX(),-temp.getY(),-temp.getZ());
              // position track
              glTranslatef(temp.getX(),temp.getY(),temp.getZ());
-      	     drawTrackPiece(temp.getY());
+      	     drawTrackPiece();
         };glPopMatrix();
+        if ((support%5)==0){
+          glPushMatrix();{
+               glTranslatef(temp.getX(),temp.getY(),temp.getZ());
+               drawTrackSupport(temp.getY());
+          };glPopMatrix();
+        }
+        support++;
     }
   }
   glEndList();
@@ -159,9 +173,9 @@ void myMenu(int value)
 	if (value==2)
 	{
 		myCam.set_mode(1);
-		myCam.set_atx(0);
-		myCam.set_aty(0);
-		myCam.set_atz(0);
+		myCam.set_atx(myCoaster.firstCart.getCartX());
+		myCam.set_aty(myCoaster.firstCart.getCartY());
+		myCam.set_atz(myCoaster.firstCart.getCartZ());
 		myCam.set_theta(2.00);
 		myCam.set_theta(1.80);
 	}
@@ -191,6 +205,9 @@ void renderScene(void)  {
     if ( myCam.get_mode()==1)
     {
 	  myCam.update_pos_arcball();
+    myCam.set_atx(myCoaster.firstCart.getCartX());
+    myCam.set_aty(myCoaster.firstCart.getCartY());
+    myCam.set_atz(myCoaster.firstCart.getCartZ());
 	}
 	
 	else if (myCam.get_mode()==2)
@@ -351,14 +368,13 @@ void myTimer(int value) {
       }
     else if(step>track[pcount].getMaxLength())
       {
-    	//step=step-track[pcount].getMaxLength();
       step=0;
-      pcount+=1;
+      pcount++;
       }
       
     if (pcount>=track.size()){
     	step=0;
-        pcount=0;
+      pcount=0;
 	  }
 	// tell GLUT to update the display
     glutPostRedisplay();

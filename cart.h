@@ -9,6 +9,9 @@
 class cart{
 	public:
 		void drawCart(bezier, float);
+		float getCartX();
+		float getCartY();
+		float getCartZ();
 	private:
 		float cartX,cartY,cartZ;
 		float cartTheta,cartPhi;
