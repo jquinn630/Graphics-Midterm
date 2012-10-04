@@ -102,7 +102,7 @@ controlpts bezier::computeCurve(float s)
     float xpos=xa*t*t*t+xb*t*t+xc*t+xd;
     float ypos=ya*t*t*t+yb*t*t+yc*t+yd;
     float zpos=za*t*t*t+zb*t*t+zc*t+zd;
-    t+=.005;
+    t+=.003;
 	float nextX=xa*t*t*t+xb*t*t+xc*t+xd;
 	float nextY=ya*t*t*t+yb*t*t+yc*t+yd;
 	float nextZ=za*t*t*t+zb*t*t+zc*t+zd;
