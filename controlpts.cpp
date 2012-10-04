@@ -37,7 +37,7 @@ double controlpts::getTheta()
 
 double controlpts::getPhi()
 {
-	return phi;
+	return (180*phi)/PI;
 }
 
 controlpts operator *( controlpts& y, float x)

@@ -34,6 +34,7 @@ void cart::drawCart(bezier bez, float step){
 		// rotate for theta
 		glTranslatef(point1.getX(), point1.getY(), point1.getZ());
 		glRotatef(point1.getTheta()+90, 0.0, 1.0, 0.0);
+		glRotatef(point1.getPhi(), 0.0, 0.0, 1.0);
 		glTranslatef(-point1.getX(),-point1.getY(),-point1.getZ());
 		// position cart on track
 		glTranslatef(point1.getX(), point1.getY()+0.5, point1.getZ());

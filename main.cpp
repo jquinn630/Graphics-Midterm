@@ -85,7 +85,7 @@ void drawGround() {
    glEnable(GL_LIGHTING);
 }
 
-void drawTrackPiece(){
+void drawTrackPiece(float height){
   glDisable(GL_LIGHTING);
     glBegin(GL_LINES);{
         glColor3f(1.0,1.0,1.0);
@@ -96,8 +96,8 @@ void drawTrackPiece(){
         glVertex3f(-0.25,0,-0.5);
         glVertex3f(0.25,0,-0.5);
         glColor3f(0.0,0.0,0.0);
-        glVertex3f(0,0,0);
-        glVertex3f(0,-5,0);
+        //glVertex3f(0,0,0);
+        //glVertex3f(0,-height-5.0,0);
     };glEnd();
   glEnable(GL_LIGHTING);
 }
@@ -112,10 +112,11 @@ void generateTrackList(){
         glPushMatrix();{
              glTranslatef(temp.getX(),temp.getY(),temp.getZ());
              glRotatef(temp.getTheta()+90, 0.0, 1.0, 0.0);
+             glRotatef(temp.getPhi(), 0.0, 0.0, 1.0);
              glTranslatef(-temp.getX(),-temp.getY(),-temp.getZ());
              // position track
              glTranslatef(temp.getX(),temp.getY(),temp.getZ());
-      	     drawTrackPiece();
+      	     drawTrackPiece(temp.getY());
         };glPopMatrix();
     }
   }
@@ -235,9 +236,11 @@ void renderScene(void)  {
 		sprintf(c, "%d", fps);
 		string temp=string(c);
         glRasterPos3i(0,0,0);
-    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'f');
-    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'p');
-    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 's');
+    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'F');
+    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'P');
+    	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'S');
+      glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ':');
+      glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
     	for (unsigned int i=0; i<temp.size(); i++)
     	{
     		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, temp[i] );
@@ -348,8 +351,9 @@ void myTimer(int value) {
       }
     else if(step>track[pcount].getMaxLength())
       {
-    	step=step-track[pcount].getMaxLength();
-    	pcount+=1;
+    	//step=step-track[pcount].getMaxLength();
+      step=0;
+      pcount+=1;
       }
       
     if (pcount>=track.size()){
