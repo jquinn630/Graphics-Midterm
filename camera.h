@@ -63,8 +63,8 @@ class camera {
   // function that updates camerea orientation for a free cam model
   void update_pos_free();
 
-  void calculate_first_person(float,float,float);
-  void update_first_person(float,float,float);
+  void calculate_first_person(float,float,float,float,float,float);
+  void update_first_person(float,float,float,float,float,float);
   
   private:
   // variables pertaining to the arcballs
@@ -87,7 +87,7 @@ class camera {
   double dirx;
   double diry;
   double dirz;
-  // variable that determines camera mode, 1 for arcball, 2 for free cam.
+  // variable that determines camera mode, 1 for arcball, 2 for free cam, 3 for first person
   int mode;
 
 };

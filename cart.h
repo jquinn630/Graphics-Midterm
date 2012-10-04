@@ -12,7 +12,15 @@ class cart{
 		float getCartX();
 		float getCartY();
 		float getCartZ();
+		float geteyeX();
+		float geteyeY();
+		float geteyeZ();
+		float getatX();
+		float getatY();
+		float getatZ();
 	private:
 		float cartX,cartY,cartZ;
 		float cartTheta,cartPhi;
+		float eyeX,eyeY,eyeZ;
+		float atX,atY,atZ;
 };

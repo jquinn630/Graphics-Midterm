@@ -239,19 +239,22 @@ void camera::update_pos_free()
 			   upx, upy, upz );
 }
 
-void camera::calculate_first_person(float x, float y, float z)
+void camera::calculate_first_person(float x, float y, float z, float ax, float ay, float az)
 {
 	// use spherical coordinates to update position
 	 set_eyex(x);
      set_eyey(y);
-     set_eyez(z);	
+     set_eyez(z);
+     set_atx(ax);
+     set_aty(ay);
+     set_atz(az);
 }
 
 //updates camera position, for arcball
-void camera::update_first_person(float x, float y, float z)
+void camera::update_first_person(float x, float y, float z, float ax, float ay, float az)
 {
     // updates camera position based on any variable changes.
-    calculate_first_person(x,y,z);
+    calculate_first_person(x,y,z,ax,ay,az);
     // calls the appropriate glu function
 	gluLookAt( eyex, eyey, eyez, 
 			   atx, aty, atz,

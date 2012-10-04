@@ -188,6 +188,16 @@ void myMenu(int value)
 		myCam.set_eyey(20);
 		myCam.set_eyez(20);
 	}
+  if (value==4)
+  {
+    myCam.set_mode(3);
+    myCam.set_eyex(myCoaster.firstCart.geteyeX());
+    myCam.set_eyey(myCoaster.firstCart.geteyeX());
+    myCam.set_eyez(myCoaster.firstCart.geteyeX());
+    myCam.set_atx(myCoaster.firstCart.getatX());
+    myCam.set_aty(myCoaster.firstCart.getatY());
+    myCam.set_atz(myCoaster.firstCart.getatZ());
+  }
 }
 
 //render scene function.  draws everything to scene.
@@ -205,15 +215,21 @@ void renderScene(void)  {
     if ( myCam.get_mode()==1)
     {
 	  myCam.update_pos_arcball();
-    myCam.set_atx(myCoaster.firstCart.getCartX());
-    myCam.set_aty(myCoaster.firstCart.getCartY());
-    myCam.set_atz(myCoaster.firstCart.getCartZ());
+    //myCam.set_atx(myCoaster.firstCart.getCartX());
+    //myCam.set_aty(myCoaster.firstCart.getCartY());
+    //myCam.set_atz(myCoaster.firstCart.getCartZ());
 	}
 	
 	else if (myCam.get_mode()==2)
 	{
 	  myCam.update_pos_free();
 	}
+
+  else if (myCam.get_mode()==3)
+  {
+    myCam.update_first_person(myCoaster.firstCart.geteyeX(),myCoaster.firstCart.geteyeY(),myCoaster.firstCart.geteyeZ(),
+                              myCoaster.firstCart.getatX(),myCoaster.firstCart.getatY(),myCoaster.firstCart.getatZ());
+  }
   
     glPushMatrix(); {
       drawGround();     // animates coaster along bezier
@@ -494,6 +510,7 @@ void initScene() {
     glutAddMenuEntry("Quit", 1);
     glutAddMenuEntry("Arcball Mode", 2);
     glutAddMenuEntry("Freecam Mode", 3);
+    glutAddMenuEntry("First Person Mode", 4);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
        	
     // tell OpenGL not to use the material system; just use whatever we 
