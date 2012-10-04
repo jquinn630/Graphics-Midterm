@@ -244,7 +244,7 @@ void camera::calculate_first_person(float x, float y, float z, float ax, float a
 	// use spherical coordinates to update position
 	 set_eyex(x);
      set_eyey(y);
-     set_eyez(z);
+     set_eyez(z);	
      set_atx(ax);
      set_aty(ay);
      set_atz(az);
@@ -259,4 +259,4 @@ void camera::update_first_person(float x, float y, float z, float ax, float ay, 
 	gluLookAt( eyex, eyey, eyez, 
 			   atx, aty, atz,
 			   upx, upy, upz );
-}
+ }

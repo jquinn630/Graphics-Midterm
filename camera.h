@@ -87,7 +87,7 @@ class camera {
   double dirx;
   double diry;
   double dirz;
-  // variable that determines camera mode, 1 for arcball, 2 for free cam, 3 for first person
+  // variable that determines camera mode, 1 for arcball, 2 for free cam 3 for first person
   int mode;
 
 };
