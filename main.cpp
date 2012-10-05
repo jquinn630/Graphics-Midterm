@@ -66,7 +66,7 @@ GLint id; // id number for menu
 GLuint trackList;
 
 // declare global camera object
-camera myCam(30.0, 2.00, 1.80,0,0,0);  // declares camera object
+camera myCam(50.0, 2.00, 1.80,0,0,0);  // declares camera object
 coaster myCoaster;
 
 // declare lights
@@ -123,7 +123,7 @@ void generateTrackList(){
   trackList = glGenLists(1); // create the list
   glNewList(trackList,GL_COMPILE);
   int support=0;
-  int pcount=0;
+  unsigned int pcount=0;
   for (unsigned int i=0; i<track.size(); i++){
     if(pcount<track.size()){
     	for (float t=0; t<=track[pcount].getMaxLength(); t+=0.5){
@@ -185,9 +185,9 @@ void myMenu(int value)
 	if (value==2)
 	{
 		myCam.set_mode(1);
-		myCam.set_atx(myCoaster.firstCart.getCartX());
-		myCam.set_aty(myCoaster.firstCart.getCartY());
-		myCam.set_atz(myCoaster.firstCart.getCartZ());
+		myCam.set_atx(0);
+		myCam.set_aty(0);
+		myCam.set_atz(0);
 		myCam.set_theta(2.00);
 		myCam.set_theta(1.80);
 	}
@@ -200,17 +200,6 @@ void myMenu(int value)
 		myCam.set_eyey(20);
 		myCam.set_eyez(20);
 	}
-	 if (value==4)
-	{
-    myCam.set_mode(3);
-    myCam.set_eyex(myCoaster.eyex);
-    myCam.set_eyey(myCoaster.eyey);
-    myCam.set_eyez(myCoaster.eyez);
-    myCam.set_atx(myCoaster.atx);
-    myCam.set_aty(myCoaster.atx);
-    myCam.set_atz(myCoaster.atx);
-  }
-
 }
 
 void firstPerson(){
@@ -255,10 +244,6 @@ void renderScene(void)  {
     if ( myCam.get_mode()==1)
     {
 	  myCam.update_pos_arcball();
-
-    myCam.set_atx(myCoaster.firstCart.getCartX());
-    myCam.set_aty(myCoaster.firstCart.getCartY());
-    myCam.set_atz(myCoaster.firstCart.getCartZ());
 
 	}
 	
