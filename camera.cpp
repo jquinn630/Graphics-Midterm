@@ -201,9 +201,9 @@ void camera::set_dirz(double z)
 void camera::calculate_pos_arcball()
 {
 	// use spherical coordinates to update position
-	 set_eyex(cameraRadius * sin(cameraTheta)*sin(cameraPhi));
-     set_eyey(cameraRadius * -cos(cameraPhi));
-     set_eyez(cameraRadius * -cos(cameraTheta)*sin(cameraPhi));	
+	 set_eyex(cameraRadius * sin(cameraTheta)*sin(cameraPhi)+atx);
+     set_eyey(cameraRadius * -cos(cameraPhi)+aty);
+     set_eyez(cameraRadius * -cos(cameraTheta)*sin(cameraPhi)+atz);	
 }
 
 //updates camera position, for arcball
