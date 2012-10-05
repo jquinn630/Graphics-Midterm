@@ -72,11 +72,16 @@ coaster myCoaster;
 // declare lights
 // light 1
 float lightCol[4] = { 1, 1, 1, 1};
-float ambientCol[4] = { 0.0, 0.0, 0.0, 1.0 };
+float ambientCol[4] = { 0.2, 0.2, 0.2, 1.0 };
 float lPosition[4] = { 10, 10, 10, 1 };
 float specularLightCol[4] = { 1.0, 1.0, 1.0, 1 };	
-
-light mainLight(lightCol,specularLightCol,ambientCol,lPosition);
+light mainLight(lightCol,specularLightCol,ambientCol,lPosition,GL_LIGHT0);
+//light2
+float lightCol2[4]={0,1,0,1};
+float ambientCol2[4]={0,0,0,1};
+float lPosition2[4]={0,10,0,1};
+float specularLightCol2[4]={1,1,1,1};
+light changeLight(lightCol2,specularLightCol2,ambientCol2,lPosition2,GL_LIGHT1);
 
 void drawGround() {
    glDisable(GL_LIGHTING);
@@ -504,6 +509,35 @@ void myTimer(int value) {
       myCoaster.thirdCart.setStep(0);
       myCoaster.thirdCart.setCount(0);
     }
+    
+    if(changeLight.getB()<1&&changeLight.getG()==1)
+    {
+    	changeLight.setB(changeLight.getB()+.005);
+    }
+    else if(changeLight.getB()>=1&&changeLight.getG()==1)
+    {
+    	changeLight.setB(1);
+    	changeLight.setG(0);
+    }
+    else if (changeLight.getR()<1&&changeLight.getB()==1)
+    {
+		changeLight.setR(changeLight.getR()+.005);
+	}
+	else if(changeLight.getR()>=1&&changeLight.getB()==1)
+    {
+    	changeLight.setR(1);
+    	changeLight.setB(0);
+    }
+    else if (changeLight.getG()<1&&changeLight.getR()==1)
+    {
+		changeLight.setG(changeLight.getG()+.005);
+	}
+	else if(changeLight.getG()>=1&&changeLight.getR()==1)
+    {
+    	changeLight.setG(1);
+    	changeLight.setR(0);
+    }
+    changeLight.updateLight();
 
 	// tell GLUT to update the display
     glutPostRedisplay();
@@ -601,6 +635,7 @@ void initScene() {
     glEnable( GL_LIGHTING );
     
     mainLight.updateLight();
+    changeLight.updateLight();
     
     id = glutCreateMenu(myMenu);
     glutAddMenuEntry("Quit", 1);
@@ -610,7 +645,7 @@ void initScene() {
        	
     // tell OpenGL not to use the material system; just use whatever we 
 	// pass with glColor*()
-    glEnable( GL_COLOR_MATERIAL );
+    //glEnable( GL_COLOR_MATERIAL );
     glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
 	//******************************************************************
 	

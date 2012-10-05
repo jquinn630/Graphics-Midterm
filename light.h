@@ -24,13 +24,21 @@
 class light {
 
 	public:
-	light(float *, float *, float *, float *);//, int);
+	light(float *, float *, float *, float *, int);
 	float getX();
 	float getY();
 	float getZ();
 	void setX(float);
 	void setY(float);
 	void setZ(float);
+	// for changing diffuse lighting color
+	float getR();
+	float getG();
+	float getB();
+	void setR(float);
+	void setG(float);
+	void setB(float);
+	//updates light
 	void updateLight();
 	
 	

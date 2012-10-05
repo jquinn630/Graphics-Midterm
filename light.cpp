@@ -15,7 +15,7 @@
 
 using namespace std;
 
-light::light(float *a, float *b, float *c, float *d)//, int name)
+light::light(float *a, float *b, float *c, float *d, int name)
 {
 	// precondition: the four float arrays passed in are of size 4.
 	for (unsigned int i=0; i<4; i++)
@@ -26,7 +26,7 @@ light::light(float *a, float *b, float *c, float *d)//, int name)
 		lPos[i]=d[i];
 	}
 	
-	lightNum=0;
+	lightNum=name;
 
 }
 
@@ -60,13 +60,43 @@ void light::setZ(float z)
 	lPos[2]=z;
 }
 
+float light::getR()
+{
+	return diffCol[0];
+}
+
+float light::getG()
+{
+	return diffCol[1];
+}
+
+float light::getB()
+{
+	return diffCol[2];
+}
+	
+void light::setR(float r)
+{
+	diffCol[0]=r;
+}
+	
+void light::setG(float g)
+{
+	diffCol[1]=g;
+}
+
+void light::setB(float b)
+{
+	diffCol[2]=b;
+}
+
 void light::updateLight()
 {
-	glLightfv( GL_LIGHT0, GL_POSITION,lPos );
-    glLightfv( GL_LIGHT0, GL_DIFFUSE,diffCol );
-    glLightfv( GL_LIGHT0, GL_AMBIENT, ambCol );
-    glLightfv( GL_LIGHT0, GL_SPECULAR, specCol );
-    glEnable( GL_LIGHT0 );
+	glLightfv( lightNum, GL_POSITION,lPos );
+    glLightfv( lightNum, GL_DIFFUSE,diffCol );
+    glLightfv( lightNum, GL_AMBIENT, ambCol );
+    glLightfv( lightNum, GL_SPECULAR, specCol );
+    glEnable(  lightNum );
 }
 
 
