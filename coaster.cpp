@@ -17,6 +17,30 @@
 #include "coaster.h"
 #include "bezier.h"
 
-void coaster::drawCoaster(bezier bez, float step){
-	firstCart.drawCart(bez,step);
+bool coasterStart=true;
+
+void coaster::drawCoaster(vector<bezier> &bez){
+	bezier bez1 = bez[firstCart.getCount()];
+	firstCart.drawCart(bez1,2);
+	bezier bez2 = bez[secondCart.getCount()];
+	secondCart.drawCart(bez2,1);
+
+	if (coasterStart){
+		eyeStep=firstCart.getStep()+1;
+		atStep=eyeStep+1.1;
+		coasterStart=false;
+	}
+	bezier bezAt = bez[atCount];
+	bezier bezEye = bez[eyeCount];
+
+	controlpts eyeCam=bezEye.computeCurve(eyeStep);
+	controlpts atCam=bezAt.computeCurve(atStep);
+
+	eyex=eyeCam.getX();
+	eyey=eyeCam.getY()+0.5;
+	eyez=eyeCam.getZ();
+
+	atx=atCam.getX();
+	aty=atCam.getY()+0.5;
+	atz=atCam.getZ();
 }

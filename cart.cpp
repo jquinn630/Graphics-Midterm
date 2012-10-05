@@ -17,6 +17,7 @@
 #include "cart.h"
 
 #define PI 3.14159
+bool cartStart=true;
 
 void drawWheel(float x, float y, float z){
 	glPushMatrix();{
@@ -26,10 +27,20 @@ void drawWheel(float x, float y, float z){
 	};glPopMatrix();
 }
 
+<<<<<<< HEAD
 void cart::drawCart(bezier bez, float step){
 	controlpts point1=bez.computeCurve(step);
 	controlpts eyePoint=bez.computeCurve(step+1);
     controlpts atPoint=bez.computeCurve(step+2);
+=======
+void cart::drawCart(bezier bez, float offset){
+	if (cartStart){
+		cartStep+=offset;
+		cartStart=false;
+	}
+
+	controlpts point1=bez.computeCurve(cartStep);	
+>>>>>>> First Person Viewport in the corner
 
 	glPushMatrix();{
 		glColor3f(1.0,0.0,0.0);
@@ -51,6 +62,7 @@ void cart::drawCart(bezier bez, float step){
 	cartX=point1.getX();
 	cartY=point1.getY()+0.5;
 	cartZ=point1.getZ();
+<<<<<<< HEAD
 	
 		// get coordinates for first person camera
 	eyeX=eyePoint.getX();
@@ -59,6 +71,8 @@ void cart::drawCart(bezier bez, float step){
 	atX=atPoint.getX();
 	atY=atPoint.getY()+0.5;
 	atZ=atPoint.getZ();
+=======
+>>>>>>> First Person Viewport in the corner
 }
 
 float cart::getCartX(){
@@ -73,28 +87,28 @@ float cart::getCartZ(){
 	return cartZ;
 }
 
-float cart::geteyeX(){
-	return eyeX;
+float cart::getStep(){
+	return cartStep;
 }
 
-float cart::geteyeY(){
-	return eyeY;
+void cart::setStep(float s){
+	cartStep=s;
 }
 
-float cart::geteyeZ(){
-	return eyeZ;
+void cart::incStep(){
+	cartStep+=0.1;
 }
 
-float cart::getatX(){
-	return atX;
+int cart::getCount(){
+	return cartPcount;
 }
 
-float cart::getatY(){
-	return atY;
+void cart::setCount(int c){
+	cartPcount=c;
 }
 
-float cart::getatZ(){
-	return atZ;
+void cart::incCount(){
+	cartPcount++;
 }
 
 

@@ -44,10 +44,6 @@ int numObjectst2;
 vector<controlpts> objt1;
 vector<controlpts> objt2;
 
-// controls motion of animated sphere
-float step=0.0;
-unsigned int pcount=0;
-
 // frame counter
 int framecount=0;
 
@@ -108,30 +104,38 @@ void drawTrackSupport(float height){
     };glEnd();
 }
 
+void drawCameraPoint(){
+  glutSolidSphere(0.2,100,100); // draw a sphere
+}
+
 // draws a bezier curve based on control points
 void generateTrackList(){
   trackList = glGenLists(1); // create the list
   glNewList(trackList,GL_COMPILE);
   int support=0;
+  int pcount=0;
   for (unsigned int i=0; i<track.size(); i++){
-  	for (float t=0; t<=track[pcount].getMaxLength(); t+=0.5){
-      	controlpts temp = track[i].computeCurve(t);
-        glPushMatrix();{
-             glTranslatef(temp.getX(),temp.getY(),temp.getZ());
-             glRotatef(temp.getTheta()+90, 0.0, 1.0, 0.0);
-             glRotatef(temp.getPhi(), 0.0, 0.0, 1.0);
-             glTranslatef(-temp.getX(),-temp.getY(),-temp.getZ());
-             // position track
-             glTranslatef(temp.getX(),temp.getY(),temp.getZ());
-      	     drawTrackPiece();
-        };glPopMatrix();
-        if ((support%5)==0){
+    if(pcount<track.size()){
+    	for (float t=0; t<=track[pcount].getMaxLength(); t+=0.5){
+        	controlpts temp = track[i].computeCurve(t);
           glPushMatrix();{
                glTranslatef(temp.getX(),temp.getY(),temp.getZ());
-               drawTrackSupport(temp.getY());
+               glRotatef(temp.getTheta()+90, 0.0, 1.0, 0.0);
+               glRotatef(temp.getPhi(), 0.0, 0.0, 1.0);
+               glTranslatef(-temp.getX(),-temp.getY(),-temp.getZ());
+               // position track
+               glTranslatef(temp.getX(),temp.getY(),temp.getZ());
+        	     drawTrackPiece();
           };glPopMatrix();
-        }
-        support++;
+          if ((support%5)==0){
+            glPushMatrix();{
+                 glTranslatef(temp.getX(),temp.getY(),temp.getZ());
+                 drawTrackSupport(temp.getY());
+            };glPopMatrix();
+          }
+          support++;
+      }
+    pcount++;
     }
   }
   glEndList();
@@ -142,10 +146,8 @@ void generateTrackList(){
 // animates a red sphere to follow the bezier curve.
 void animateBezier()
 {
-     bezier b=track[pcount];
-     
      glPushMatrix(); {
-        myCoaster.drawCoaster(b,step);
+        myCoaster.drawCoaster(track);
     }; glPopMatrix(); 
 }
 
@@ -191,14 +193,41 @@ void myMenu(int value)
 	 if (value==4)
 	{
     myCam.set_mode(3);
-    myCam.set_eyex(myCoaster.firstCart.geteyeX());
-    myCam.set_eyey(myCoaster.firstCart.geteyeX());
-    myCam.set_eyez(myCoaster.firstCart.geteyeX());
-    myCam.set_atx(myCoaster.firstCart.getatX());
-    myCam.set_aty(myCoaster.firstCart.getatY());
-    myCam.set_atz(myCoaster.firstCart.getatZ());
+    myCam.set_eyex(myCoaster.eyex);
+    myCam.set_eyey(myCoaster.eyey);
+    myCam.set_eyez(myCoaster.eyez);
+    myCam.set_atx(myCoaster.atx);
+    myCam.set_aty(myCoaster.atx);
+    myCam.set_atz(myCoaster.atx);
   }
 
+}
+
+void firstPerson(){
+  glMatrixMode(GL_MODELVIEW);             
+  glLoadIdentity(); 
+  glDrawBuffer( GL_BACK );
+  glClear(GL_DEPTH_BUFFER_BIT);
+  glViewport(windowHeight-windowHeight/4,windowWidth-windowWidth/4,windowWidth/4,windowHeight/4);
+  glPushMatrix();
+    myCam.update_first_person(myCoaster.eyex,myCoaster.eyey,myCoaster.eyez,
+                              myCoaster.atx,myCoaster.aty,myCoaster.atz);
+    glPushMatrix(); {
+      drawGround();     // animates coaster along bezier
+    }; glPopMatrix();
+
+    glPushMatrix(); {
+      animateBezier();     // animates coaster along bezier
+    }; glPopMatrix();
+
+    glCallList(trackList);
+  glPopMatrix();
+
+  glPushMatrix();
+    glBegin(GL_LINES);{
+        //glVertex3f(windowHeight-windowHeight/4, GLfloat y, GLfloat z)
+    };glEnd();
+  glPopMatrix();
 }
 
 //render scene function.  draws everything to scene.
@@ -227,6 +256,7 @@ void renderScene(void)  {
 	{
 	  myCam.update_pos_free();
 	}
+<<<<<<< HEAD
 	
    else if (myCam.get_mode()==3)
  {
@@ -235,12 +265,33 @@ void renderScene(void)  {
   }
 
   
+=======
+
+  else if (myCam.get_mode()==3)
+  {
+    myCam.update_first_person(myCoaster.eyex,myCoaster.eyey,myCoaster.eyez,
+                              myCoaster.atx,myCoaster.aty,myCoaster.atz);
+  }
+
+>>>>>>> First Person Viewport in the corner
     glPushMatrix(); {
       drawGround();     // animates coaster along bezier
     }; glPopMatrix();
 
     glPushMatrix(); {
       animateBezier();     // animates coaster along bezier
+    }; glPopMatrix();
+
+    glPushMatrix(); {
+      glColor3f(0,1.0,0.0);
+      glTranslatef(myCoaster.eyex,myCoaster.eyey,myCoaster.eyez);
+      drawCameraPoint();     // animates coaster along bezier
+    }; glPopMatrix();
+
+    glPushMatrix(); {
+      glColor3f(1,0,0.0);
+      glTranslatef(myCoaster.atx,myCoaster.aty,myCoaster.atz);
+      drawCameraPoint();     // animates coaster along bezier
     }; glPopMatrix();
 
     /*for (unsigned int i=0; i<objt1.size(); i++)
@@ -286,15 +337,9 @@ void renderScene(void)  {
       glMatrixMode(GL_PROJECTION);
   glPopMatrix();
 
-  /*glPushMatrix();
-      glOrtho(-1,1,-1,1,-1,1);
-      glViewport(windowWidth-windowWidth/4, windowHeight-windowHeight/4, windowWidth/4, windowHeight/4);
-      glLoadIdentity();
-          glBegin(GL_LINES);{
-
-          };glEnd();
-      glMatrixMode(GL_PROJECTION);
-  glPopMatrix();*/
+  glPushMatrix();
+    firstPerson();
+  glPopMatrix();
 
   glMatrixMode(GL_MODELVIEW);
   glFlush();
@@ -393,21 +438,81 @@ void clickControl(int button, int state, int x, int y)
 //********************************************************************************
 void myTimer(int value) {
     
-    // handle animation of cart along curve
-    if(step<track[pcount].getMaxLength())
+    if(myCoaster.atStep>=(track[myCoaster.atCount].getMaxLength()-0.1))
       {
-        step+=0.1;
-      }
-    else if(step>track[pcount].getMaxLength())
+      myCoaster.atStep=0;
+      myCoaster.atCount++;
+      }  
+      else
       {
-      step=0;
-      pcount++;
+        myCoaster.atStep+=0.1;
       }
-      
-    if (pcount>=track.size()){
-    	step=0;
-      pcount=0;
+
+    if (myCoaster.atCount>=track.size()){
+      myCoaster.atStep=0;
+      myCoaster.atCount=0;
+    }
+
+    if(myCoaster.eyeStep>=(track[myCoaster.eyeCount].getMaxLength()-0.1))
+      {
+      myCoaster.eyeStep=0;
+      myCoaster.eyeCount++;
+      }  
+      else
+      {
+        myCoaster.eyeStep+=0.1;
+      }
+
+    if (myCoaster.eyeCount>=track.size()){
+      myCoaster.eyeStep=0;
+      myCoaster.eyeCount=0;
+    }
+
+    if(myCoaster.firstCart.getStep()>=(track[myCoaster.firstCart.getCount()].getMaxLength()-0.1))
+      {
+      myCoaster.firstCart.setStep(0);
+      myCoaster.firstCart.incCount();
+      }  
+      else
+      {
+        myCoaster.firstCart.incStep();
+      }
+
+    if (myCoaster.firstCart.getCount()>=track.size()){
+    	myCoaster.firstCart.setStep(0);
+      myCoaster.firstCart.setCount(0);
 	  }
+
+    if(myCoaster.secondCart.getStep()>=(track[myCoaster.secondCart.getCount()].getMaxLength()-0.1))
+      {
+      myCoaster.secondCart.setStep(0);
+      myCoaster.secondCart.incCount();
+      }  
+      else
+      {
+        myCoaster.secondCart.incStep();
+      }
+
+    if (myCoaster.secondCart.getCount()>=track.size()){
+      myCoaster.secondCart.setStep(0);
+      myCoaster.secondCart.setCount(0);
+    }
+
+    if(myCoaster.thirdCart.getStep()>=(track[myCoaster.thirdCart.getCount()].getMaxLength()-0.1))
+      {
+      myCoaster.thirdCart.setStep(0);
+      myCoaster.thirdCart.incCount();
+      }  
+      else
+      {
+        myCoaster.thirdCart.incStep();
+      }
+
+    if (myCoaster.thirdCart.getCount()>=track.size()){
+      myCoaster.thirdCart.setStep(0);
+      myCoaster.thirdCart.setCount(0);
+    }
+
 	// tell GLUT to update the display
     glutPostRedisplay();
 	// and register our timer again

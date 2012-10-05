@@ -9,6 +9,14 @@
 
 class coaster{
 	public:
-		void drawCoaster(bezier,float);
+		void drawCoaster(vector<bezier> &);
 		cart firstCart;
+		cart secondCart;
+		cart thirdCart;
+		void computeEye();
+		void computeAt();
+		float eyex,eyey,eyez;
+		float atx,aty,atz;
+		float eyeStep,atStep;
+		float eyeCount,atCount;
 };

@@ -8,7 +8,7 @@
 
 class cart{
 	public:
-		void drawCart(bezier, float);
+		void drawCart(bezier,float);
 		float getCartX();
 		float getCartY();
 		float getCartZ();
@@ -18,9 +18,15 @@ class cart{
 		float getatX();
 		float getatY();
 		float getatZ();
+		float getStep();
+		void setStep(float);
+		void incStep();
+		int getCount();
+		void setCount(int);
+		void incCount();
 	private:
 		float cartX,cartY,cartZ;
 		float cartTheta,cartPhi;
-		float eyeX,eyeY,eyeZ;
-		float atX,atY,atZ;
+		float cartStep;
+		int cartPcount;
 };
