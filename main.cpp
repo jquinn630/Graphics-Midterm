@@ -25,6 +25,7 @@
 #include "controlpts.h"
 #include "bezier.h"
 #include "coaster.h"
+#include "light.h"
 
 #define PI 3.14159
 
@@ -67,6 +68,15 @@ GLuint trackList;
 // declare global camera object
 camera myCam(30.0, 2.00, 1.80,0,0,0);  // declares camera object
 coaster myCoaster;
+
+// declare lights
+// light 1
+float lightCol[4] = { 1, 1, 1, 1};
+float ambientCol[4] = { 0.0, 0.0, 0.0, 1.0 };
+float specularLightCol[4] = { 1.0, 1.0, 1.0, 1 };	// white light
+float lPosition[4] = { 10, 10, 10, 1 };
+light mainLight(lightCol, specularLightCol, ambientCol, lPosition);  //, GL_LIGHT0);
+  
 
 void drawGround() {
    glDisable(GL_LIGHTING);
@@ -584,19 +594,8 @@ void initScene() {
 	// tell OpenGL to perform depth testing with the Z-Buffer to perform hidden
 	//		surface removal.  We will discuss this more very soon.
     glEnable( GL_DEPTH_TEST );
-	
-	//******************************************************************
-    // this is some code to enable a default light for the scene;
-    // feel free to play around with this, but we won't talk about
-    // lighting in OpenGL for another couple of weeks yet.
-    float lightCol[4] = { 1, 1, 1, 1};
-    float ambientCol[4] = { 0.0, 0.0, 0.0, 1.0 };
-    float lPosition[4] = { 10, 10, 10, 1 };
-    glLightfv( GL_LIGHT0, GL_POSITION,lPosition );
-    glLightfv( GL_LIGHT0, GL_DIFFUSE,lightCol );
-    glLightfv( GL_LIGHT0, GL_AMBIENT, ambientCol );
-    glEnable( GL_LIGHTING );
-    glEnable( GL_LIGHT0 );
+	glEnable( GL_LIGHTING );
+    mainLight.updateLight();
     
     id = glutCreateMenu(myMenu);
     glutAddMenuEntry("Quit", 1);
@@ -610,10 +609,6 @@ void initScene() {
     glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
 	//******************************************************************
 	
-    // tells OpenGL to blend colors across triangles. Once lighting is
-    // enabled, this means that objects will appear smoother - if your object
-    // is rounded or has a smooth surface, this is probably a good idea;
-    // if your object has a blocky surface, you probably want to disable this.
     glShadeModel( GL_SMOOTH );
     generateTrackList();
 }

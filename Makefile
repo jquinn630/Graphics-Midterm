@@ -40,7 +40,7 @@ depend:
 .cpp.o: 	
 	$(CXX) $(CFLAGS) $(INCPATH) -c -o $@ $<
 
-midterm: main.o camera.o bezier.o controlpts.o cart.o coaster.o
+midterm: main.o camera.o bezier.o controlpts.o cart.o coaster.o light.o
 	$(CXX) $(CFLAGS) $(INCPATH) -o $@ $^ $(LIBPATH) $(LIBS)
 	
 
@@ -51,3 +51,4 @@ controlpts.o: controlpts.cpp
 bezier.o: bezier.cpp
 cart.o: cart.cpp
 coaster.o: coaster.cpp
+light.o: light.cpp

@@ -14,14 +14,28 @@
 	#include <GL/glu.h>
 #endif
 
+#ifndef LIGHT_H
+#define LIGHT_H
+
 class light {
 
 	public:
-	light(float *, float *, float *, float *);
+	light(float *, float *, float *, float *);//, int);
+	float getX();
+	float getY();
+	float getZ();
+	void setX(float);
+	void setY(float);
+	void setZ(float);
+	void updateLight();
+	
 	
 	private:
-	int diffCol[4];
-	int specCol[4];
-	int ambCol[4];
-	int lPos[4];
+	float diffCol[4];
+	float specCol[4];
+	float ambCol[4];
+	float lPos[4];
+	int lightNum;
 };
+
+#endif
