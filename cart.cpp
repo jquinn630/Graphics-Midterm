@@ -27,12 +27,6 @@ void drawWheel(float x, float y, float z){
 	};glPopMatrix();
 }
 
-<<<<<<< HEAD
-void cart::drawCart(bezier bez, float step){
-	controlpts point1=bez.computeCurve(step);
-	controlpts eyePoint=bez.computeCurve(step+1);
-    controlpts atPoint=bez.computeCurve(step+2);
-=======
 void cart::drawCart(bezier bez, float offset){
 	if (cartStart){
 		cartStep+=offset;
@@ -40,7 +34,6 @@ void cart::drawCart(bezier bez, float offset){
 	}
 
 	controlpts point1=bez.computeCurve(cartStep);	
->>>>>>> First Person Viewport in the corner
 
 	glPushMatrix();{
 		glColor3f(1.0,0.0,0.0);
@@ -62,17 +55,6 @@ void cart::drawCart(bezier bez, float offset){
 	cartX=point1.getX();
 	cartY=point1.getY()+0.5;
 	cartZ=point1.getZ();
-<<<<<<< HEAD
-	
-		// get coordinates for first person camera
-	eyeX=eyePoint.getX();
-	eyeY=eyePoint.getY()+0.5;
-	eyeZ=eyePoint.getZ();
-	atX=atPoint.getX();
-	atY=atPoint.getY()+0.5;
-	atZ=atPoint.getZ();
-=======
->>>>>>> First Person Viewport in the corner
 }
 
 float cart::getCartX(){

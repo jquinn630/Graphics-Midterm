@@ -256,24 +256,7 @@ void renderScene(void)  {
 	{
 	  myCam.update_pos_free();
 	}
-<<<<<<< HEAD
-	
-   else if (myCam.get_mode()==3)
- {
-    myCam.update_first_person(myCoaster.firstCart.geteyeX(),myCoaster.firstCart.geteyeY(),myCoaster.firstCart.geteyeZ(),
-                              myCoaster.firstCart.getatX(),myCoaster.firstCart.getatY(),myCoaster.firstCart.getatZ());
-  }
 
-  
-=======
-
-  else if (myCam.get_mode()==3)
-  {
-    myCam.update_first_person(myCoaster.eyex,myCoaster.eyey,myCoaster.eyez,
-                              myCoaster.atx,myCoaster.aty,myCoaster.atz);
-  }
-
->>>>>>> First Person Viewport in the corner
     glPushMatrix(); {
       drawGround();     // animates coaster along bezier
     }; glPopMatrix();
@@ -619,7 +602,6 @@ void initScene() {
     glutAddMenuEntry("Quit", 1);
     glutAddMenuEntry("Arcball Mode", 2);
     glutAddMenuEntry("Freecam Mode", 3);
-    glutAddMenuEntry("First Person Mode", 4);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
        	
     // tell OpenGL not to use the material system; just use whatever we 
