@@ -73,10 +73,10 @@ coaster myCoaster;
 // light 1
 float lightCol[4] = { 1, 1, 1, 1};
 float ambientCol[4] = { 0.0, 0.0, 0.0, 1.0 };
-float specularLightCol[4] = { 1.0, 1.0, 1.0, 1 };	// white light
 float lPosition[4] = { 10, 10, 10, 1 };
-light mainLight(lightCol, specularLightCol, ambientCol, lPosition);  //, GL_LIGHT0);
-  
+float specularLightCol[4] = { 1.0, 1.0, 1.0, 1 };	
+
+light mainLight(lightCol,specularLightCol,ambientCol,lPosition);
 
 void drawGround() {
    glDisable(GL_LIGHTING);
@@ -594,7 +594,13 @@ void initScene() {
 	// tell OpenGL to perform depth testing with the Z-Buffer to perform hidden
 	//		surface removal.  We will discuss this more very soon.
     glEnable( GL_DEPTH_TEST );
-	glEnable( GL_LIGHTING );
+	
+	//******************************************************************
+    // this is some code to enable a default light for the scene;
+    // feel free to play around with this, but we won't talk about
+    // lighting in OpenGL for another couple of weeks yet.
+    glEnable( GL_LIGHTING );
+    
     mainLight.updateLight();
     
     id = glutCreateMenu(myMenu);
@@ -609,6 +615,10 @@ void initScene() {
     glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
 	//******************************************************************
 	
+    // tells OpenGL to blend colors across triangles. Once lighting is
+    // enabled, this means that objects will appear smoother - if your object
+    // is rounded or has a smooth surface, this is probably a good idea;
+    // if your object has a blocky surface, you probably want to disable this.
     glShadeModel( GL_SMOOTH );
     generateTrackList();
 }

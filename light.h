@@ -2,6 +2,10 @@
 // light.h
 // john quinn and taylor seale
 
+// definition of light class for rollercoaster
+// light.h
+// john quinn and taylor seale
+
 #include <iostream>
 
 #ifdef __APPLE__
