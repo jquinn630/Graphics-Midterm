@@ -113,7 +113,7 @@ void generateTrackList(){
   trackList = glGenLists(1); // create the list
   glNewList(trackList,GL_COMPILE);
   int support=0;
-  int pcount=0;
+  unsigned int pcount=0;
   for (unsigned int i=0; i<track.size(); i++){
     if(pcount<track.size()){
     	for (float t=0; t<=track[pcount].getMaxLength(); t+=0.5){
