@@ -27,7 +27,7 @@ void coaster::drawCoaster(vector<bezier> &bez){
 
 	if (coasterStart){
 		eyeStep=firstCart.getStep()+1;
-		atStep=eyeStep+0.1;
+		atStep=eyeStep+1.1;
 		coasterStart=false;
 	}
 	bezier bezAt = bez[atCount];
