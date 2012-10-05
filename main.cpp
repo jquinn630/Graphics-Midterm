@@ -79,7 +79,7 @@ light mainLight(lightCol,specularLightCol,ambientCol,lPosition,GL_LIGHT0);
 //light2
 float lightCol2[4]={0,1,0,1};
 float ambientCol2[4]={0,0,0,1};
-float lPosition2[4]={0,10,0,1};
+float lPosition2[4]={0,7,0,1};
 float specularLightCol2[4]={1,1,1,1};
 light changeLight(lightCol2,specularLightCol2,ambientCol2,lPosition2,GL_LIGHT1);
 
@@ -202,8 +202,8 @@ void myMenu(int value)
 	if (value==3)
 	{
 		myCam.set_mode(2);
-		myCam.set_theta(-pi/3);
-		myCam.set_phi(pi/2.8);
+		myCam.set_theta(-PI/3);
+		myCam.set_phi(PI/2.8);
 		myCam.set_eyex(30);
 		myCam.set_eyey(20);
 		myCam.set_eyez(20);

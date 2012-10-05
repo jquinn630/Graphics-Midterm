@@ -20,19 +20,6 @@
 #define PI 3.14159
 bool cartStart=true;
 
-void drawWheel(float x, float y, float z){
-	glPushMatrix();{
-		glColor3f(0.0,0.0,0.0);
-		glTranslatef(x,y,z);
-		glutSolidTorus(0.25, 0.01, 100, 100);
-	};glPopMatrix();
-}
-
-void cart::drawCart(bezier bez, float offset){
-	if (cartStart){
-		cartStep+=offset;
-		cartStart=false;
-	}
 	//declare materials
 	//rollercoaster body
 	float matdiffCol[4] = { 0.8, 0.0, 0.05 };	// reddish				
@@ -46,6 +33,20 @@ void cart::drawCart(bezier bez, float offset){
 	float matambCol2[4] = { 0.2, 0.2, 0.2 };
 	material wheelMat(matdiffCol2,matspecCol2,matambCol2,40.0);
 
+
+void drawWheel(float x, float y, float z){
+	glPushMatrix();{
+		glColor3f(0.0,0.0,0.0);
+		glTranslatef(x,y,z);
+		glutSolidTorus(0.25, 0.01, 100, 100);
+	};glPopMatrix();
+}
+
+void cart::drawCart(bezier bez, float offset){
+	if (cartStart){
+		cartStep+=offset;
+		cartStart=false;
+	}
 	controlpts point1=bez.computeCurve(cartStep);	
 
 	glPushMatrix();{
