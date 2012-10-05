@@ -1,10 +1,11 @@
 // Taylor Seale & John Quinn
 // Computer Graphics Midterm
-// car.h
+// cart.h
 
 // header file for a single coaster car
 
 #include "bezier.h"
+#include "material.h"
 
 class cart{
 	public:

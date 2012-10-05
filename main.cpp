@@ -1,6 +1,6 @@
-// Homework Assignment 4
+// Rollercoaster-Midterm Project
 // main.cpp
-// Written by John Quinn
+// Written by Taylor Seale and John Quinn
 
 #ifdef __APPLE__
 	#include <GLUT/glut.h>
@@ -26,6 +26,7 @@
 #include "bezier.h"
 #include "coaster.h"
 #include "light.h"
+#include "material.h"
 
 #define PI 3.14159
 
@@ -67,7 +68,6 @@ GLuint trackList;
 
 // declare global camera object
 camera myCam(30.0, 2.00, 1.80,0,0,0);  // declares camera object
-coaster myCoaster;
 
 // declare lights
 // light 1
@@ -82,6 +82,9 @@ float ambientCol2[4]={0,0,0,1};
 float lPosition2[4]={0,10,0,1};
 float specularLightCol2[4]={1,1,1,1};
 light changeLight(lightCol2,specularLightCol2,ambientCol2,lPosition2,GL_LIGHT1);
+
+//declare coaster object;
+coaster myCoaster;
 
 void drawGround() {
    glDisable(GL_LIGHTING);

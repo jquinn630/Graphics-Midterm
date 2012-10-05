@@ -6,6 +6,7 @@
 
 #include "bezier.h"
 #include "cart.h"
+#include "material.h"
 
 class coaster{
 	public:

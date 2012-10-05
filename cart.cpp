@@ -15,6 +15,7 @@
 #endif
 #include <math.h>
 #include "cart.h"
+#include "material.h"
 
 #define PI 3.14159
 bool cartStart=true;
@@ -32,11 +33,23 @@ void cart::drawCart(bezier bez, float offset){
 		cartStep+=offset;
 		cartStart=false;
 	}
+	//declare materials
+	//rollercoaster body
+	float matdiffCol[4] = { 0.8, 0.0, 0.05 };	// reddish				
+	float matspecCol[4] = { 1.0, 1.0, 0.0 };					
+	float matambCol[4] = { 0.8, 0.8, 0.8 };
+	material bodyMat(matdiffCol, matspecCol, matambCol, 90.0);
+
+	// rollercoaster wheel
+	float matdiffCol2[4] = {0.0,0.0,0.0 };	// black			
+	float matspecCol2[4] = { 0.1, 0.1, 0.1 };    // doesn't reflect as much					
+	float matambCol2[4] = { 0.2, 0.2, 0.2 };
+	material wheelMat(matdiffCol2,matspecCol2,matambCol2,40.0);
 
 	controlpts point1=bez.computeCurve(cartStep);	
 
 	glPushMatrix();{
-		glColor3f(1.0,0.0,0.0);
+		//glColor3f(1.0,0.0,0.0);
 		// rotate for theta
 		glTranslatef(point1.getX(), point1.getY(), point1.getZ());
 		glRotatef(point1.getTheta()+90, 0.0, 1.0, 0.0);
@@ -44,11 +57,13 @@ void cart::drawCart(bezier bez, float offset){
 		glTranslatef(-point1.getX(),-point1.getY(),-point1.getZ());
 		// position cart on track
 		glTranslatef(point1.getX(), point1.getY()+0.5, point1.getZ());
+		bodyMat.setMaterial();
 		glutSolidCube(1.0);
-		glColor3f(0.0,0.0,0.0);
+		wheelMat.setMaterial();
+		//glColor3f(0.0,0.0,0.0);
 		drawWheel(0.25,-0.25,0.5);
 		drawWheel(-0.25,-0.25,0.5);
-		glColor3f(1.0,1.0,1.0);
+		//glColor3f(1.0,1.0,1.0);
 		drawWheel(0.25,-0.25,-0.5);
 		drawWheel(-0.25,-0.25,-0.5);
 	};glPopMatrix();
