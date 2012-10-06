@@ -75,7 +75,7 @@ camera fpCam(30.0,2.00,1.80,0,0,0);  // first person camera object
 float lightCol[4] = { 1, 1, 1, 1};
 float ambientCol[4] = { 0.2, 0.2, 0.2, 1.0 };
 float lPosition[4] = { 0, 10, 0, 1 };
-float specularLightCol[4] = { 1.0, 1.0, 1.0, 1 };	
+float specularLightCol[4] = { 0.3, 0.3, 0.3, 1 };	
 light mainLight(lightCol,specularLightCol,ambientCol,lPosition,GL_LIGHT0);
 //light2
 float lightCol2[4]={0,1,0,1};
@@ -137,11 +137,13 @@ void drawTree()
     glutSolidCone(1,2.0,5,5);
   glPopMatrix();
 
+  glDisable(GL_LIGHTING);
   GLUquadric *trunk = gluNewQuadric();
   glColor3f(0.6,0.4,0.2);
   glPushMatrix();
     glRotatef(270,1,0,0);
     gluCylinder(trunk, 0.5, 0.5, 0.5, 25, 25);
+  glEnable(GL_LIGHTING);
   glPopMatrix();
 
 }
