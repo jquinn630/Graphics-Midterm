@@ -74,13 +74,13 @@ camera fpCam(30.0,2.00,1.80,0,0,0);  // first person camera object
 // light 1
 float lightCol[4] = { 1, 1, 1, 1};
 float ambientCol[4] = { 0.2, 0.2, 0.2, 1.0 };
-float lPosition[4] = { 10, 10, 10, 1 };
+float lPosition[4] = { 0, 10, 0, 1 };
 float specularLightCol[4] = { 1.0, 1.0, 1.0, 1 };	
 light mainLight(lightCol,specularLightCol,ambientCol,lPosition,GL_LIGHT0);
 //light2
 /*float lightCol2[4]={0,1,0,1};
 float ambientCol2[4]={0,0,0,1};
-float lPosition2[4]={0,20,0,1};
+float lPosition2[4]={0,0,0,1};
 float specularLightCol2[4]={1,1,1,1};
 light changeLight(lightCol2,specularLightCol2,ambientCol2,lPosition2,GL_LIGHT1);*/
 
@@ -510,7 +510,7 @@ void myTimer(int value) {
       myCoaster.fourthCart.setCount(0);
     }
     
-   /* if(changeLight.getB()<1&&changeLight.getG()==1)
+   /*if(changeLight.getB()<1&&changeLight.getG()==1)
     {
     	changeLight.setB(changeLight.getB()+.005);
     }

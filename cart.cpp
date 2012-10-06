@@ -22,10 +22,10 @@ float wheelTheta=0;
 
 	//declare materials
 	//rollercoaster body
-	float matdiffCol[4] = { 0.4,0.0,0.0};	// reddish				
+	float matdiffCol[4] = { 1.0,0.0,0.0};	// reddish				
 	float matspecCol[4] = { 1.0, 1.0, 1.0 };					
-	float matambCol[4] = { 0.8, 0.8, 0.8 };
-	material bodyMat(matdiffCol, matspecCol, matambCol, 128.0);
+	float matambCol[4] = { 1.0, 1.0, 1.0 };
+	material bodyMat(matdiffCol, matspecCol, matambCol, 90.0);
 
 	// rollercoaster wheel
 	float matdiffCol2[4] = {0.0,0.0,0.0 };	// black			
@@ -77,7 +77,7 @@ void drawWheel(float size, float x, float y, float z){
 			glRotatef(wheelTheta, 0.0, 0.0, 1.0);       //Rotate about the y-axis
 			glTranslatef(-x, -y, -z);
 			drawHubcap(size,x,y,z);
-			wheelTheta++;
+			wheelTheta+=0.5;
 	};glPopMatrix();
 }
 
