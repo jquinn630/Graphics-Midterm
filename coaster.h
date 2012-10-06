@@ -14,6 +14,7 @@ class coaster{
 		cart firstCart;
 		cart secondCart;
 		cart thirdCart;
+		cart fourthCart;
 		float eyex,eyey,eyez;
 		float atx,aty,atz;
 		float eyeStep,atStep;

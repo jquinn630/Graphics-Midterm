@@ -78,11 +78,11 @@ float lPosition[4] = { 10, 10, 10, 1 };
 float specularLightCol[4] = { 1.0, 1.0, 1.0, 1 };	
 light mainLight(lightCol,specularLightCol,ambientCol,lPosition,GL_LIGHT0);
 //light2
-float lightCol2[4]={0,1,0,1};
+/*float lightCol2[4]={0,1,0,1};
 float ambientCol2[4]={0,0,0,1};
 float lPosition2[4]={0,20,0,1};
 float specularLightCol2[4]={1,1,1,1};
-light changeLight(lightCol2,specularLightCol2,ambientCol2,lPosition2,GL_LIGHT1);
+light changeLight(lightCol2,specularLightCol2,ambientCol2,lPosition2,GL_LIGHT1);*/
 
 //declare coaster object;
 coaster myCoaster;
@@ -290,17 +290,6 @@ void renderScene(void)  {
      animateBezier();
     }; glPopMatrix();
 
-    /*glPushMatrix(); {
-      glColor3f(0,1.0,0.0);
-      glTranslatef(myCoaster.eyex,myCoaster.eyey,myCoaster.eyez);
-      drawCameraPoint();     // animates coaster along bezier
-    }; glPopMatrix();
-
-    glPushMatrix(); {
-      glColor3f(1,0,0.0);
-      glTranslatef(myCoaster.atx,myCoaster.aty,myCoaster.atz);
-      drawCameraPoint();     // animates coaster along bezier
-    }; glPopMatrix();*/
       glEnable( GL_COLOR_MATERIAL );
     glCallList(trackList);
     glPopMatrix();
@@ -490,8 +479,38 @@ void myTimer(int value) {
       myCoaster.secondCart.setStep(0);
       myCoaster.secondCart.setCount(0);
     }
+
+    if(myCoaster.thirdCart.getStep()>=(track[myCoaster.thirdCart.getCount()].getMaxLength()-0.1))
+      {
+      myCoaster.thirdCart.setStep(0);
+      myCoaster.thirdCart.incCount();
+      }  
+      else
+      {
+        myCoaster.thirdCart.incStep();
+      }
+
+    if (myCoaster.thirdCart.getCount()>=track.size()){
+      myCoaster.thirdCart.setStep(0);
+      myCoaster.thirdCart.setCount(0);
+    }
+
+    if(myCoaster.fourthCart.getStep()>=(track[myCoaster.fourthCart.getCount()].getMaxLength()-0.1))
+      {
+      myCoaster.fourthCart.setStep(0);
+      myCoaster.fourthCart.incCount();
+      }  
+      else
+      {
+        myCoaster.fourthCart.incStep();
+      }
+
+    if (myCoaster.fourthCart.getCount()>=track.size()){
+      myCoaster.fourthCart.setStep(0);
+      myCoaster.fourthCart.setCount(0);
+    }
     
-    if(changeLight.getB()<1&&changeLight.getG()==1)
+   /* if(changeLight.getB()<1&&changeLight.getG()==1)
     {
     	changeLight.setB(changeLight.getB()+.005);
     }
@@ -518,7 +537,7 @@ void myTimer(int value) {
     	changeLight.setG(1);
     	changeLight.setR(0);
     }
-    changeLight.updateLight();
+    changeLight.updateLight();*/
 
 	// tell GLUT to update the display
     glutPostRedisplay();
@@ -616,7 +635,7 @@ void initScene() {
     glEnable( GL_LIGHTING );
     
     mainLight.updateLight();
-    changeLight.updateLight();
+    //changeLight.updateLight();
     
     id = glutCreateMenu(myMenu);
     glutAddMenuEntry("Quit", 1);

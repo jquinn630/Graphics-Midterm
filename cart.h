@@ -9,6 +9,7 @@
 
 class cart{
 	public:
+		cart();
 		void drawCart(bezier,float);
 		float getCartX();
 		float getCartY();
@@ -30,5 +31,6 @@ class cart{
 		float cartTheta,cartPhi;
 		float cartStep;
 		int cartPcount;
+		bool cartStart;
 
 };

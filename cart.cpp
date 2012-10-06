@@ -18,7 +18,6 @@
 #include "material.h"
 
 #define PI 3.14159
-bool cartStart=true;
 float wheelTheta=0;
 
 	//declare materials
@@ -33,6 +32,10 @@ float wheelTheta=0;
 	float matspecCol2[4] = { 0.1, 0.1, 0.1 };    // doesn't reflect as much					
 	float matambCol2[4] = { 0.2, 0.2, 0.2 };
 	material wheelMat(matdiffCol2,matspecCol2,matambCol2,40.0);
+
+cart::cart(){
+	cartStart=true;
+}
 
 void drawTire(float size){
 	// use GLUT primative to draw tire
