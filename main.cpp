@@ -228,19 +228,30 @@ void firstPerson(){
   glMatrixMode(GL_MODELVIEW);             
   glLoadIdentity(); 
   glDrawBuffer( GL_BACK );
-  glClear(GL_DEPTH_BUFFER_BIT);
-  glViewport(windowHeight-windowHeight/4,windowWidth-windowWidth/4,windowWidth/4,windowHeight/4);
+  glViewport(windowHeight-windowHeight/3,windowWidth-windowWidth/3,windowWidth/3,windowHeight/3);
+  glScissor(windowHeight-windowHeight/3,windowWidth-windowWidth/3,windowWidth/3,windowHeight/3);
+  glEnable(GL_SCISSOR_TEST);
+  glClearDepth(1.0);
+  glClearColor(0,0,1,1);
+  glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+  glDisable(GL_SCISSOR_TEST);
   glPushMatrix();
     myCam.update_first_person(myCoaster.eyex,myCoaster.eyey,myCoaster.eyez,
                               myCoaster.atx,myCoaster.aty,myCoaster.atz);
     glCallList(trackList);
   glPopMatrix();
-
-  glPushMatrix();
-    glBegin(GL_LINES);{
-        //glVertex3f(windowHeight-windowHeight/4, GLfloat y, GLfloat z)
-    };glEnd();
-  glPopMatrix();
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  glOrtho(-0.5, windowWidth-0.5, -0.5, windowHeight-0.5, -1, 1);
+  glColor3f(1,1,1);
+  glLineWidth(5);
+  glBegin(GL_LINE_LOOP);
+      glVertex2f(windowWidth,0);
+      glVertex2f(0,0);
+      glVertex2f(0,windowHeight);
+      glVertex2f(windowWidth,windowHeight);
+  glEnd();
+  glLineWidth(1);
 }
 
 //render scene function.  draws everything to scene.
@@ -268,10 +279,6 @@ void renderScene(void)  {
 	{
 	  myCam.update_pos_free();
 	}
-
-    glPushMatrix(); {
-      drawGround();     // animates coaster along bezier
-    }; glPopMatrix();
 
     glPushMatrix(); {
       animateBezier();     // animates coaster along bezier
