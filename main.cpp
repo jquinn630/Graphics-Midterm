@@ -146,13 +146,6 @@ void drawTree()
 
 }
 
-void drawT2()
-{
-  glColor3f(.7,.7,0);
-  glScalef(2,2,2);
-  glutSolidOctahedron();
-}
-
 // draws a bezier curve based on control points
 void generateTrackList(){
   trackList = glGenLists(1); // create the list
@@ -194,13 +187,6 @@ void generateTrackList(){
        }; glPopMatrix();
     }
     
-  /*for (unsigned int j=0; j<objt2.size(); j++)
-    {
-       glPushMatrix(); {
-         glTranslatef(objt2[j].getX(), objt2[j].getY()+5, objt2[j].getZ());
-       drawT2();     // draws scenery for object type 2
-       }; glPopMatrix();
-    }*/
   glEndList();
 } 
 
@@ -256,7 +242,6 @@ void firstPerson(){
                               myCoaster.atx,myCoaster.aty,myCoaster.atz);
     glEnable( GL_COLOR_MATERIAL );
     glCallList(trackList);
-    glDisable( GL_COLOR_MATERIAL );
   glPopMatrix();
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -269,6 +254,7 @@ void firstPerson(){
       glVertex2f(0,windowHeight);
       glVertex2f(windowWidth,windowHeight);
   glEnd();
+  glDisable( GL_COLOR_MATERIAL );
   glLineWidth(1);
 }
 
@@ -317,7 +303,6 @@ void renderScene(void)  {
     }; glPopMatrix();*/
       glEnable( GL_COLOR_MATERIAL );
     glCallList(trackList);
-    glDisable( GL_COLOR_MATERIAL );
     glPopMatrix();
 
     glClear(GL_FRAMEBUFFER | GL_DEPTH_BUFFER_BIT);
@@ -347,7 +332,7 @@ void renderScene(void)  {
   glPushMatrix();
     firstPerson();
   glPopMatrix();
-
+  glDisable( GL_COLOR_MATERIAL );
   glMatrixMode(GL_MODELVIEW);
   glFlush();
       //push the back buffer to the screen
