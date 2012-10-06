@@ -14,8 +14,6 @@ class coaster{
 		cart firstCart;
 		cart secondCart;
 		cart thirdCart;
-		void computeEye();
-		void computeAt();
 		float eyex,eyey,eyez;
 		float atx,aty,atz;
 		float eyeStep,atStep;
