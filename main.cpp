@@ -132,6 +132,9 @@ void generateTrackList(){
   glNewList(trackList,GL_COMPILE);
   int support=0;
   unsigned int pcount=0;
+  glPushMatrix();
+      drawGround();
+  glPopMatrix();
   for (unsigned int i=0; i<track.size(); i++){
     if(pcount<track.size()){
     	for (float t=0; t<=track[pcount].getMaxLength(); t+=0.5){
@@ -230,14 +233,6 @@ void firstPerson(){
   glPushMatrix();
     myCam.update_first_person(myCoaster.eyex,myCoaster.eyey,myCoaster.eyez,
                               myCoaster.atx,myCoaster.aty,myCoaster.atz);
-    glPushMatrix(); {
-      drawGround();     // animates coaster along bezier
-    }; glPopMatrix();
-
-    glPushMatrix(); {
-      animateBezier();     // animates coaster along bezier
-    }; glPopMatrix();
-
     glCallList(trackList);
   glPopMatrix();
 
