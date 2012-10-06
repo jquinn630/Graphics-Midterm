@@ -309,8 +309,9 @@ void renderScene(void)  {
       glTranslatef(myCoaster.atx,myCoaster.aty,myCoaster.atz);
       drawCameraPoint();     // animates coaster along bezier
     }; glPopMatrix();*/
-
+    	glEnable( GL_COLOR_MATERIAL );
     glCallList(trackList);
+    glDisable(GL_COLOR_MATERIAL);
     glPopMatrix();
 
     glClear(GL_FRAMEBUFFER | GL_DEPTH_BUFFER_BIT);
@@ -634,7 +635,7 @@ void initScene() {
        	
     // tell OpenGL not to use the material system; just use whatever we 
 	// pass with glColor*()
-    //glEnable( GL_COLOR_MATERIAL );
+		glEnable( GL_COLOR_MATERIAL );
     glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
 	//******************************************************************
 	
@@ -644,6 +645,7 @@ void initScene() {
     // if your object has a blocky surface, you probably want to disable this.
     glShadeModel( GL_SMOOTH );
     generateTrackList();
+    glDisable(GL_COLOR_MATERIAL);
 }
 
 int main(int argc, char* argv[]) {
