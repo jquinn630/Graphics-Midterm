@@ -120,10 +120,25 @@ void drawTrackSupport(float height){
         glVertex3f(0,0,0);
         glVertex3f(0,-height-5.0,0);
     };glEnd();
+  glEnable(GL_LIGHTING);
 }
 
 void drawCameraPoint(){
   glutSolidSphere(0.2,100,100); // draw a sphere
+}
+
+void drawT1()
+{
+  glColor3f(0,0,1);
+  glRotatef(270,1,0,0);
+  glutSolidCone(1.7,3.0,5,5);
+}
+
+void drawT2()
+{
+  glColor3f(.7,.7,0);
+  glScalef(2,2,2);
+  glutSolidOctahedron();
 }
 
 // draws a bezier curve based on control points
@@ -159,10 +174,23 @@ void generateTrackList(){
     pcount++;
     }
   }
+  for (unsigned int i=0; i<objt1.size(); i++)
+    {
+      glPushMatrix(); {
+          glTranslatef(objt1[i].getX(), objt1[i].getY(), objt1[i].getZ());
+          drawT1();      // draws scenery for object type 1
+       }; glPopMatrix();
+    }
+    
+  for (unsigned int j=0; j<objt2.size(); j++)
+    {
+       glPushMatrix(); {
+         glTranslatef(objt2[j].getX(), objt2[j].getY(), objt2[j].getZ());
+       drawT2();     // draws scenery for object type 2
+       }; glPopMatrix();
+    }
   glEndList();
 } 
-
-
 
 // animates a red sphere to follow the bezier curve.
 void animateBezier()
@@ -170,20 +198,6 @@ void animateBezier()
      glPushMatrix(); {
         myCoaster.drawCoaster(track);
     }; glPopMatrix(); 
-}
-
-void drawT1()
-{
-	glColor3f(0,0,1);
-	glRotatef(270,1,0,0);
-	glutSolidCone(1.7,3.0,5,5);
-}
-
-void drawT2()
-{
-	glColor3f(.7,.7,0);
-	glScalef(2,2,2);
-	glutSolidOctahedron();
 }
 
 // function to handle menu attached to middle button
@@ -280,11 +294,11 @@ void renderScene(void)  {
 	  myCam.update_pos_free();
 	}
 
-    glPushMatrix(); {
-      animateBezier();     // animates coaster along bezier
+  glPushMatrix(); {
+     animateBezier();
     }; glPopMatrix();
 
-    glPushMatrix(); {
+    /*glPushMatrix(); {
       glColor3f(0,1.0,0.0);
       glTranslatef(myCoaster.eyex,myCoaster.eyey,myCoaster.eyez);
       drawCameraPoint();     // animates coaster along bezier
@@ -294,23 +308,7 @@ void renderScene(void)  {
       glColor3f(1,0,0.0);
       glTranslatef(myCoaster.atx,myCoaster.aty,myCoaster.atz);
       drawCameraPoint();     // animates coaster along bezier
-    }; glPopMatrix();
-
-    /*for (unsigned int i=0; i<objt1.size(); i++)
-    {
-    	glPushMatrix(); {
-    	   	glTranslatef(objt1[i].getX(), objt1[i].getY(), objt1[i].getZ());
-      		drawT1();      // draws scenery for object type 1
-   		 }; glPopMatrix();
-    }
-    
-    for (unsigned int j=0; j<objt2.size(); j++)
-    {
-   	   glPushMatrix(); {
-   	     glTranslatef(objt2[j].getX(), objt2[j].getY(), objt2[j].getZ());
-     	 drawT2();     // draws scenery for object type 2
-   	   }; glPopMatrix();
-    }*/
+    }; glPopMatrix();*/
 
     glCallList(trackList);
     glPopMatrix();
@@ -442,16 +440,12 @@ void myTimer(int value) {
     
     if(myCoaster.atStep>=(track[myCoaster.atCount].getMaxLength()-0.1))
       {
-        cout << myCoaster.atCount << " " << myCoaster.atStep << " " << track[myCoaster.atCount].getMaxLength()-0.1 << endl;
       myCoaster.atStep=0;
       myCoaster.atCount++;
-      cout << myCoaster.atCount << " " << myCoaster.atStep << " " << track[myCoaster.atCount].getMaxLength()-0.1 << endl;
       }  
       else
       {
-        cout << myCoaster.atCount << " " << myCoaster.atStep << " " << track[myCoaster.atCount].getMaxLength()-0.1 << endl;
         myCoaster.atStep+=0.1;
-        cout << myCoaster.atCount << " " << myCoaster.atStep << " " << track[myCoaster.atCount].getMaxLength()-0.1 << endl;
       }
 
     if (myCoaster.atCount>=track.size()){
@@ -503,21 +497,6 @@ void myTimer(int value) {
     if (myCoaster.secondCart.getCount()>=track.size()){
       myCoaster.secondCart.setStep(0);
       myCoaster.secondCart.setCount(0);
-    }
-
-    if(myCoaster.thirdCart.getStep()>=(track[myCoaster.thirdCart.getCount()].getMaxLength()-0.1))
-      {
-      myCoaster.thirdCart.setStep(0);
-      myCoaster.thirdCart.incCount();
-      }  
-      else
-      {
-        myCoaster.thirdCart.incStep();
-      }
-
-    if (myCoaster.thirdCart.getCount()>=track.size()){
-      myCoaster.thirdCart.setStep(0);
-      myCoaster.thirdCart.setCount(0);
     }
     
     if(changeLight.getB()<1&&changeLight.getG()==1)

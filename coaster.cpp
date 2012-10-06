@@ -21,11 +21,9 @@ bool coasterStart=true;
 
 void coaster::drawCoaster(vector<bezier> &bez){
 	bezier bez1 = bez[firstCart.getCount()];
-	firstCart.drawCart(bez1,2);
+	firstCart.drawCart(bez1,1.2);
 	bezier bez2 = bez[secondCart.getCount()];
-	secondCart.drawCart(bez2,1);
-	bezier bez3 = bez[thirdCart.getCount()];
-	thirdCart.drawCart(bez3,1);
+	secondCart.drawCart(bez2,0);
 
 	if (coasterStart){
 		eyeStep=firstCart.getStep()+1;
