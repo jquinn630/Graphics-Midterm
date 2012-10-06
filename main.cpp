@@ -188,7 +188,15 @@ void generateTrackList(){
           drawTree();      // draws scenery for object type 1
        }; glPopMatrix();
     }
-    
+  glDisable( GL_COLOR_MATERIAL );
+  for (unsigned int i=0; i<objt2.size(); i++)
+	{
+		glPushMatrix(); {
+         	 glTranslatef(objt2[i].getX(), objt2[i].getY()+6, objt2[i].getZ());
+			glutSolidOctahedron();
+		}; glPopMatrix();
+	}
+  glEnable(GL_COLOR_MATERIAL);
   glEndList();
 } 
 
