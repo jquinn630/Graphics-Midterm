@@ -268,7 +268,7 @@ void renderScene(void)  {
         // set camera position
     if ( myCam.get_mode()==1)
     {
-	  myCam.set_atx(myCoaster.firstCart.getCartX());
+	     myCam.set_atx(myCoaster.firstCart.getCartX());
       myCam.set_aty(myCoaster.firstCart.getCartY());
       myCam.set_atz(myCoaster.firstCart.getCartZ());
 	  myCam.update_pos_arcball();
@@ -442,18 +442,23 @@ void myTimer(int value) {
     
     if(myCoaster.atStep>=(track[myCoaster.atCount].getMaxLength()-0.1))
       {
+        cout << myCoaster.atCount << " " << myCoaster.atStep << " " << track[myCoaster.atCount].getMaxLength()-0.1 << endl;
       myCoaster.atStep=0;
       myCoaster.atCount++;
+      cout << myCoaster.atCount << " " << myCoaster.atStep << " " << track[myCoaster.atCount].getMaxLength()-0.1 << endl;
       }  
       else
       {
+        cout << myCoaster.atCount << " " << myCoaster.atStep << " " << track[myCoaster.atCount].getMaxLength()-0.1 << endl;
         myCoaster.atStep+=0.1;
+        cout << myCoaster.atCount << " " << myCoaster.atStep << " " << track[myCoaster.atCount].getMaxLength()-0.1 << endl;
       }
 
     if (myCoaster.atCount>=track.size()){
       myCoaster.atStep=0;
       myCoaster.atCount=0;
     }
+
 
     if(myCoaster.eyeStep>=(track[myCoaster.eyeCount].getMaxLength()-0.1))
       {
