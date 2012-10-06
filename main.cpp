@@ -80,7 +80,7 @@ light mainLight(lightCol,specularLightCol,ambientCol,lPosition,GL_LIGHT0);
 //light2
 float lightCol2[4]={0,1,0,1};
 float ambientCol2[4]={0,0,0,1};
-float lPosition2[4]={0,7,0,1};
+float lPosition2[4]={0,20,0,1};
 float specularLightCol2[4]={1,1,1,1};
 light changeLight(lightCol2,specularLightCol2,ambientCol2,lPosition2,GL_LIGHT1);
 
@@ -226,16 +226,6 @@ void myMenu(int value)
 		myCam.set_eyey(20);
 		myCam.set_eyez(20);
 	}
-	if (value==4)
-	{
-     myCam.set_mode(3);
-     myCam.set_eyex(myCoaster.eyex);
-     myCam.set_eyey(myCoaster.eyey);
-     myCam.set_eyez(myCoaster.eyez);
-     myCam.set_atx(myCoaster.atx);
-     myCam.set_aty(myCoaster.atx);
-     myCam.set_atz(myCoaster.atx);
-  }
 
 }
 
@@ -292,7 +282,10 @@ void renderScene(void)  {
 	
 	else if (myCam.get_mode()==2)
 	{
-	  myCam.update_pos_free();
+      myCam.set_eyex(myCam.get_eyex());
+      myCam.set_eyey(myCam.get_eyey());
+      myCam.set_eyez(myCam.get_eyez());
+	    myCam.update_pos_free();
 	}
 
   glPushMatrix(); {
@@ -656,7 +649,7 @@ int main(int argc, char* argv[]) {
     glutInitDisplayMode( GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGB );
     glutInitWindowPosition( 50, 50 );
     glutInitWindowSize( windowWidth, windowHeight );
-    glutCreateWindow( "Bezier Curve" );
+    glutCreateWindow( "Rollercoaster" );
     
     // handle file
 	FILE *dataFile;		// used to open data file
