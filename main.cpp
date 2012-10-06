@@ -68,6 +68,7 @@ GLuint trackList;
 
 // declare global camera object
 camera myCam(30.0, 2.00, 1.80,0,0,0);  // declares camera object
+camera fpCam(30.0,2.00,1.80,0,0,0);  // first person camera object
 
 // declare lights
 // light 1
@@ -250,7 +251,7 @@ void firstPerson(){
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glDisable(GL_SCISSOR_TEST);
   glPushMatrix();
-    myCam.update_first_person(myCoaster.eyex,myCoaster.eyey,myCoaster.eyez,
+    fpCam.update_first_person(myCoaster.eyex,myCoaster.eyey,myCoaster.eyez,
                               myCoaster.atx,myCoaster.aty,myCoaster.atz);
     glCallList(trackList);
   glPopMatrix();
