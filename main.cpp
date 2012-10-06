@@ -128,11 +128,22 @@ void drawCameraPoint(){
   glutSolidSphere(0.2,100,100); // draw a sphere
 }
 
-void drawT1()
+void drawTree()
 {
-  glColor3f(0,0,1);
-  glRotatef(270,1,0,0);
-  glutSolidCone(1.7,3.0,5,5);
+  glColor3f(0,1,0);
+  glPushMatrix();
+    glRotatef(270,1,0,0);
+    glTranslatef(0, 0, 0.5);
+    glutSolidCone(1,2.0,5,5);
+  glPopMatrix();
+
+  GLUquadric *trunk = gluNewQuadric();
+  glColor3f(0.6,0.4,0.2);
+  glPushMatrix();
+    glRotatef(270,1,0,0);
+    gluCylinder(trunk, 0.5, 0.5, 0.5, 25, 25);
+  glPopMatrix();
+
 }
 
 void drawT2()
@@ -178,18 +189,18 @@ void generateTrackList(){
   for (unsigned int i=0; i<objt1.size(); i++)
     {
       glPushMatrix(); {
-          glTranslatef(objt1[i].getX(), objt1[i].getY(), objt1[i].getZ());
-          drawT1();      // draws scenery for object type 1
+          glTranslatef(objt1[i].getX(), objt1[i].getY()+5, objt1[i].getZ());
+          drawTree();      // draws scenery for object type 1
        }; glPopMatrix();
     }
     
-  for (unsigned int j=0; j<objt2.size(); j++)
+  /*for (unsigned int j=0; j<objt2.size(); j++)
     {
        glPushMatrix(); {
-         glTranslatef(objt2[j].getX(), objt2[j].getY(), objt2[j].getZ());
+         glTranslatef(objt2[j].getX(), objt2[j].getY()+5, objt2[j].getZ());
        drawT2();     // draws scenery for object type 2
        }; glPopMatrix();
-    }
+    }*/
   glEndList();
 } 
 
@@ -243,7 +254,9 @@ void firstPerson(){
   glPushMatrix();
     fpCam.update_first_person(myCoaster.eyex,myCoaster.eyey,myCoaster.eyez,
                               myCoaster.atx,myCoaster.aty,myCoaster.atz);
+    glEnable( GL_COLOR_MATERIAL );
     glCallList(trackList);
+    glDisable( GL_COLOR_MATERIAL );
   glPopMatrix();
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -287,7 +300,6 @@ void renderScene(void)  {
       myCam.set_eyez(myCam.get_eyez());
 	    myCam.update_pos_free();
 	}
-
   glPushMatrix(); {
      animateBezier();
     }; glPopMatrix();
@@ -303,9 +315,9 @@ void renderScene(void)  {
       glTranslatef(myCoaster.atx,myCoaster.aty,myCoaster.atz);
       drawCameraPoint();     // animates coaster along bezier
     }; glPopMatrix();*/
-    	glEnable( GL_COLOR_MATERIAL );
+      glEnable( GL_COLOR_MATERIAL );
     glCallList(trackList);
-    glDisable(GL_COLOR_MATERIAL);
+    glDisable( GL_COLOR_MATERIAL );
     glPopMatrix();
 
     glClear(GL_FRAMEBUFFER | GL_DEPTH_BUFFER_BIT);
