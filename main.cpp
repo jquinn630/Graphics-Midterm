@@ -66,6 +66,9 @@ float oldx=0, oldy=0;    // holds previous x and y position of the mouse
 GLint id; // id number for menu
 GLuint trackList;
 
+GLuint GrassTexHandle;
+int GrassTexWidth, GrassTexHeight;
+
 // declare global camera object
 camera myCam(30.0, 2.00, 1.80,0,0,0);  // declares camera object
 camera fpCam(30.0,2.00,1.80,0,0,0);  // first person camera object
@@ -88,15 +91,26 @@ light changeLight(lightCol2,specularLightCol2,ambientCol2,lPosition2,GL_LIGHT1);
 coaster myCoaster;
 
 void drawGround() {
-   glDisable(GL_LIGHTING);
-        glColor3f(0.4,0.4,0.4);
+  glEnable( GL_TEXTURE_2D );
+    glBindTexture(  GL_TEXTURE_2D, GrassTexHandle );
     glBegin(GL_QUADS);{
+      //glNormal3f( 0, 0, 1 );
+      glTexCoord2f( 0, 0 );
       glVertex3f(-15,-5,-15);
+
+      //glNormal3f( 0, 0, 1 );
+      glTexCoord2f( 1, 0 );
       glVertex3f(15,-5,-15);
+
+      //glNormal3f( 0, 0, 1 );
+      glTexCoord2f( 1, 1 );
       glVertex3f(15,-5,15);
+
+      //glNormal3f( 0, 0, 1 );
+      glTexCoord2f( 0, 1 );
       glVertex3f(-15,-5,15);
     };glEnd();
-   glEnable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
 }
 
 void drawTrackPiece(){
@@ -580,6 +594,95 @@ void resizeWindow(int w, int h) {
 	gluPerspective( 45.0f, aspectRatio, 0.1, 1000 );
 }
 
+bool registerOpenGLTexture(unsigned char *textureData, 
+               unsigned int texWidth, unsigned int texHeight, 
+               GLuint &textureHandle) {
+    if(textureData == 0) {
+        fprintf(stderr,"Cannot register texture; no data specified.");
+        return false;
+    }
+  
+  // TODO: Setup Step 2-3 generate texture handle and bind texture
+  glGenTextures( 1, &textureHandle );
+  glBindTexture( GL_TEXTURE_2D, textureHandle );
+
+  
+  // TODO: Setup Step 4
+  // TODO: set color mode
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);  // GL_MODULATE or GL_DECAL
+  
+  // TODO: set min/mag filters
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);  // a MIN Filter MUST BE SET
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    
+  // TODO: set wrapping options
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // GL_REPEAT or GL_CLAMP
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    
+    GLenum errCode;
+    const GLubyte *errString;
+  
+    if ((errCode = glGetError()) != GL_NO_ERROR) {
+        errString = gluErrorString(errCode);
+        fprintf(stderr,"Cannot register texture; OpenGL error: %s.", errString);
+        return false;
+    } 
+  
+  // TODO: Setup Step 5 register image
+    glTexImage2D( GL_TEXTURE_2D,  // specifying a 2D texture
+         0,         // level of the texture map - used for mipmapping
+         GL_RGB,      // internal format of image data
+         texWidth,      // texture width
+         texHeight,     // texture height
+         0,         // border width - used for filtering
+         GL_RGB,      // type of texels to use
+         GL_UNSIGNED_BYTE,  // how is the data stored in array
+         textureData    // pointer to array of image data
+         );
+    return true;
+}
+
+bool readPPM(string filename, int &imageWidth, int &imageHeight, unsigned char* &imageData) {
+    FILE *fp = fopen(filename.c_str(), "r");
+    int temp, maxValue;
+    fscanf(fp, "P%d", &temp);
+    if(temp != 3) {
+        fprintf(stderr, "Error: PPM file is not of correct format! (Must be P3, is P%d.)\n", temp);
+        fclose(fp);
+        return false;
+    }
+  
+    //got the file header right...
+    fscanf(fp, "%d", &imageWidth);
+    fscanf(fp, "%d", &imageHeight);
+    fscanf(fp, "%d", &maxValue);
+  
+    //now that we know how big it is, allocate the buffer...
+    imageData = new unsigned char[imageWidth*imageHeight*3];
+    if(!imageData) {
+        fprintf(stderr, "Error: couldn't allocate image memory. Dimensions: %d x %d.\n", imageWidth, imageHeight);
+        fclose(fp);
+        return false;
+    }
+  
+    //and read the data in.
+    for(int j = 0; j < imageHeight; j++) {
+        for(int i = 0; i < imageWidth; i++) {
+            int r, g, b;
+            fscanf(fp, "%d", &r);
+            fscanf(fp, "%d", &g);
+            fscanf(fp, "%d", &b);
+      
+            imageData[(j*imageWidth+i)*3+0] = r;
+            imageData[(j*imageWidth+i)*3+1] = g;
+            imageData[(j*imageWidth+i)*3+2] = b;
+        }
+    }
+    
+    fclose(fp);
+    return true;
+}
+
 // function that calculates fps.
 void calculatefps()
 {
@@ -663,6 +766,13 @@ void initScene() {
     // enabled, this means that objects will appear smoother - if your object
     // is rounded or has a smooth surface, this is probably a good idea;
     // if your object has a blocky surface, you probably want to disable this.
+     unsigned char *GrassTexData;
+      if( readPPM( "grass.ppm", GrassTexWidth, GrassTexHeight, GrassTexData ) )
+    printf( "Successfully read in image grass.ppm\n" );
+    
+  // TODO: Setup Steps 2-5
+  if( registerOpenGLTexture( GrassTexData, GrassTexWidth, GrassTexHeight, GrassTexHandle ) )
+    printf( "Successfully registered texture with handle %d\n", GrassTexHandle );
     glShadeModel( GL_SMOOTH );
     generateTrackList();
     glDisable(GL_COLOR_MATERIAL);
