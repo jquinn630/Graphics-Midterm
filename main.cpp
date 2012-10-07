@@ -91,10 +91,12 @@ light changeLight(lightCol2,specularLightCol2,ambientCol2,lPosition2,GL_LIGHT1);
 coaster myCoaster;
 
 void drawGround() {
-  glEnable( GL_TEXTURE_2D );
-    glBindTexture(  GL_TEXTURE_2D, GrassTexHandle );
+  //glEnable( GL_TEXTURE_2D );
+   // glBindTexture(  GL_TEXTURE_2D, GrassTexHandle );
+  glDisable(GL_LIGHTING);
     glBegin(GL_QUADS);{
       //glNormal3f( 0, 0, 1 );
+      glColor3f(0.4,0.4,0.4);
       glTexCoord2f( 0, 0 );
       glVertex3f(-15,-5,-15);
 
@@ -110,7 +112,8 @@ void drawGround() {
       glTexCoord2f( 0, 1 );
       glVertex3f(-15,-5,15);
     };glEnd();
-    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
+    //glDisable(GL_TEXTURE_2D);
 }
 
 void drawTrackPiece(){
