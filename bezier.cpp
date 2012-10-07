@@ -111,12 +111,21 @@ controlpts bezier::computeCurve(float s)
 	float deltaY = nextY - ypos;
 	float deltaZ = nextZ - zpos;
 	float theta = atan(deltaX/deltaZ);
+	cout<< deltaX << deltaY << deltaZ << endl;
 	// calculate Phi
 	float phi;
 	if (deltaX>=0)
 	phi = asin(deltaY/sqrt(deltaX*deltaX+deltaY*deltaY+deltaZ*deltaZ));
 	else phi = PI-asin(deltaY/sqrt(deltaX*deltaX+deltaY*deltaY+deltaZ*deltaZ))+PI;
-	if (deltaZ<0)
+	if (deltaZ<0&&deltaY>0&&deltaX>0)
 	phi*=-1;
-    return controlpts(xpos,ypos,zpos,theta,phi);
+	else if (deltaZ>0&&deltaY<0&&deltaX>0)
+	phi*=-1;
+	else if (deltaZ>0&&deltaY>0&&deltaX>0)
+	phi*=-1;
+	else if (deltaZ<0&&deltaY<0&&deltaX<0)
+	phi*=-1;
+	else if (deltaZ<0&&deltaY>0&&deltaX<0)
+	phi*=-1;
+	return controlpts(xpos,ypos,zpos,theta,phi);
 }
