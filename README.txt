@@ -66,6 +66,7 @@ KNOWN BUGS:
 CONTRIBUTIONS:
 	-To see each individuals contributions visit...
 		https://github.com/jquinn630/Graphics-Midterm/commits/master/
+		*sound was implemented by John, but not put on github because we couldn't get ALUT to work on our personal machines.
 		
 		
 		
