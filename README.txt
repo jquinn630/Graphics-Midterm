@@ -60,6 +60,9 @@ KNOWN BUGS:
 	-Issue with phi value interpretations
 	-Odd flicker in first person viewport when changing splines
 		
+CONTRIBUTIONS:
+	-To see each individuals contributions visit...
+		https://github.com/jquinn630/Graphics-Midterm/commits/master/
 		
 		
 		
