@@ -32,8 +32,11 @@ MAKE AND RUN:
 		<number of control points>
 		<control point x> <control point y> <control point z>
 		...
-		<number of objects>
-		<object type> <object x, y, z> <object size>
+		<number of trees>
+		<tree x> <tree y> <tree z>
+		...
+		<number of octahedrons>
+		<oct x> <oct y> <oct z>
 		...
 	-Enjoy!
 	
