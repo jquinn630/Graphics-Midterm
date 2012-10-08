@@ -111,7 +111,6 @@ controlpts bezier::computeCurve(float s)
 	float deltaY = nextY - ypos;
 	float deltaZ = nextZ - zpos;
 	float theta = atan(deltaX/deltaZ);
-	cout<< deltaX << deltaY << deltaZ << endl;
 	// calculate Phi
 	float phi;
 	if (deltaX>=0)
